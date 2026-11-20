@@ -1,0 +1,110 @@
+[
+  {
+    "width": 320,
+    "clientWidth": 320,
+    "pageWidth": 320,
+    "rootPx": "16px",
+    "bridgeWidth": 288,
+    "bridgeHeight": 1708.703125,
+    "minTextPx": 14,
+    "buttons": [
+      {
+        "label": "Fibres",
+        "height": 48,
+        "pressed": "true"
+      },
+      {
+        "label": "Normals",
+        "height": 48,
+        "pressed": "false"
+      },
+      {
+        "label": "Spacing",
+        "height": 48,
+        "pressed": "false"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 390,
+    "clientWidth": 390,
+    "pageWidth": 390,
+    "rootPx": "16px",
+    "bridgeWidth": 358,
+    "bridgeHeight": 1580.578125,
+    "minTextPx": 14,
+    "buttons": [
+      {
+        "label": "Fibres",
+        "height": 48,
+        "pressed": "true"
+      },
+      {
+        "label": "Normals",
+        "height": 48,
+        "pressed": "false"
+      },
+      {
+        "label": "Spacing",
+        "height": 48,
+        "pressed": "false"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 1348,
+    "clientWidth": 1348,
+    "pageWidth": 1348,
+    "rootPx": "16.2125px",
+    "bridgeWidth": 1240.15625,
+    "bridgeHeight": 924.6875,
+    "minTextPx": 14.1859,
+    "buttons": [
+      {
+        "label": "Fibres",
+        "height": 48.625,
+        "pressed": "true"
+      },
+      {
+        "label": "Normals",
+        "height": 48.625,
+        "pressed": "false"
+      },
+      {
+        "label": "Spacing",
+        "height": 48.625,
+        "pressed": "false"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 2560,
+    "clientWidth": 2560,
+    "pageWidth": 2560,
+    "rootPx": "20px",
+    "bridgeWidth": 2160,
+    "bridgeHeight": 1200,
+    "minTextPx": 17.5,
+    "buttons": [
+      {
+        "label": "Fibres",
+        "height": 60,
+        "pressed": "true"
+      },
+      {
+        "label": "Normals",
+        "height": 60,
+        "pressed": "false"
+      },
+      {
+        "label": "Spacing",
+        "height": 60,
+        "pressed": "false"
+      }
+    ],
+    "overflow": []
+  }
+]

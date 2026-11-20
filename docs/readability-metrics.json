@@ -1,0 +1,781 @@
+{
+  "layouts": [
+    {
+      "viewport": 320,
+      "client": 305,
+      "pageWidth": 305,
+      "root": "16px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18px",
+          "width": 305,
+          "height": 23730
+        },
+        ".hero-description": {
+          "font": "18px",
+          "width": 273,
+          "height": 158
+        },
+        ".hero-actions .button": {
+          "font": "17px",
+          "width": 209,
+          "height": 57
+        },
+        ".hero-meta": {
+          "font": "14px",
+          "width": 273,
+          "height": 50
+        },
+        ".section": {
+          "font": "18px",
+          "width": 273,
+          "height": 3553
+        },
+        ".story-copy .lead": {
+          "font": "18px",
+          "width": 273,
+          "height": 208
+        },
+        ".section-heading p+p": {
+          "font": "18px",
+          "width": 273,
+          "height": 184
+        },
+        ".canvas-heading": {
+          "font": "14px",
+          "width": 271,
+          "height": 123
+        },
+        ".stat-label": {
+          "font": "14px",
+          "width": 119,
+          "height": 42
+        },
+        ".cli-description": {
+          "font": "16px",
+          "width": 239,
+          "height": 136
+        },
+        ".cli-command": {
+          "font": "15px",
+          "width": 237,
+          "height": 202
+        },
+        ".source-grid a": {
+          "font": "16px",
+          "width": 273,
+          "height": 88
+        },
+        ".hero-figure-note": {
+          "font": "14px",
+          "width": 273,
+          "height": 42
+        }
+      }
+    },
+    {
+      "viewport": 390,
+      "client": 375,
+      "pageWidth": 375,
+      "root": "16px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18px",
+          "width": 375,
+          "height": 21055
+        },
+        ".hero-description": {
+          "font": "18px",
+          "width": 343,
+          "height": 126
+        },
+        ".hero-actions .button": {
+          "font": "17px",
+          "width": 209,
+          "height": 57
+        },
+        ".hero-meta": {
+          "font": "14px",
+          "width": 343,
+          "height": 50
+        },
+        ".section": {
+          "font": "18px",
+          "width": 343,
+          "height": 3075
+        },
+        ".story-copy .lead": {
+          "font": "18px",
+          "width": 343,
+          "height": 148
+        },
+        ".section-heading p+p": {
+          "font": "18px",
+          "width": 343,
+          "height": 122
+        },
+        ".canvas-heading": {
+          "font": "14px",
+          "width": 341,
+          "height": 100
+        },
+        ".stat-label": {
+          "font": "14px",
+          "width": 189,
+          "height": 21
+        },
+        ".cli-description": {
+          "font": "16px",
+          "width": 309,
+          "height": 109
+        },
+        ".cli-command": {
+          "font": "15px",
+          "width": 307,
+          "height": 202
+        },
+        ".source-grid a": {
+          "font": "16px",
+          "width": 343,
+          "height": 88
+        },
+        ".hero-figure-note": {
+          "font": "14px",
+          "width": 343,
+          "height": 42
+        }
+      }
+    },
+    {
+      "viewport": 768,
+      "client": 753,
+      "pageWidth": 753,
+      "root": "16px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18px",
+          "width": 753,
+          "height": 16120
+        },
+        ".hero-description": {
+          "font": "18px",
+          "width": 551,
+          "height": 95
+        },
+        ".hero-actions .button": {
+          "font": "17px",
+          "width": 209,
+          "height": 57
+        },
+        ".hero-meta": {
+          "font": "14px",
+          "width": 454,
+          "height": 25
+        },
+        ".section": {
+          "font": "18px",
+          "width": 692,
+          "height": 2563
+        },
+        ".story-copy .lead": {
+          "font": "20px",
+          "width": 692,
+          "height": 99
+        },
+        ".section-heading p+p": {
+          "font": "18px",
+          "width": 651,
+          "height": 61
+        },
+        ".canvas-heading": {
+          "font": "14px",
+          "width": 690,
+          "height": 73
+        },
+        ".stat-label": {
+          "font": "14px",
+          "width": 167,
+          "height": 21
+        },
+        ".cli-description": {
+          "font": "16px",
+          "width": 578,
+          "height": 54
+        },
+        ".cli-command": {
+          "font": "15px",
+          "width": 632,
+          "height": 160
+        },
+        ".source-grid a": {
+          "font": "16px",
+          "width": 334,
+          "height": 88
+        },
+        ".hero-figure-note": {
+          "font": "14px",
+          "width": 467,
+          "height": 21
+        }
+      }
+    },
+    {
+      "viewport": 960,
+      "client": 945,
+      "pageWidth": 945,
+      "root": "16px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18px",
+          "width": 945,
+          "height": 15715
+        },
+        ".hero-description": {
+          "font": "18px",
+          "width": 551,
+          "height": 95
+        },
+        ".hero-actions .button": {
+          "font": "17px",
+          "width": 209,
+          "height": 57
+        },
+        ".hero-meta": {
+          "font": "14px",
+          "width": 454,
+          "height": 25
+        },
+        ".section": {
+          "font": "18px",
+          "width": 868,
+          "height": 2455
+        },
+        ".story-copy .lead": {
+          "font": "20px",
+          "width": 723,
+          "height": 99
+        },
+        ".section-heading p+p": {
+          "font": "18px",
+          "width": 651,
+          "height": 61
+        },
+        ".canvas-heading": {
+          "font": "14px",
+          "width": 866,
+          "height": 73
+        },
+        ".stat-label": {
+          "font": "14px",
+          "width": 225,
+          "height": 21
+        },
+        ".cli-description": {
+          "font": "16px",
+          "width": 578,
+          "height": 54
+        },
+        ".cli-command": {
+          "font": "15px",
+          "width": 808,
+          "height": 160
+        },
+        ".source-grid a": {
+          "font": "16px",
+          "width": 422,
+          "height": 88
+        },
+        ".hero-figure-note": {
+          "font": "14px",
+          "width": 467,
+          "height": 21
+        }
+      }
+    },
+    {
+      "viewport": 1280,
+      "client": 1265,
+      "pageWidth": 1265,
+      "root": "16px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18px",
+          "width": 1265,
+          "height": 12899
+        },
+        ".hero-description": {
+          "font": "18px",
+          "width": 521,
+          "height": 95
+        },
+        ".hero-actions .button": {
+          "font": "17px",
+          "width": 209,
+          "height": 57
+        },
+        ".hero-meta": {
+          "font": "14px",
+          "width": 454,
+          "height": 25
+        },
+        ".section": {
+          "font": "18px",
+          "width": 1163,
+          "height": 1881
+        },
+        ".story-copy .lead": {
+          "font": "20px",
+          "width": 556,
+          "height": 132
+        },
+        ".section-heading p+p": {
+          "font": "18px",
+          "width": 556,
+          "height": 92
+        },
+        ".canvas-heading": {
+          "font": "14px",
+          "width": 695,
+          "height": 73
+        },
+        ".stat-label": {
+          "font": "14px",
+          "width": 324,
+          "height": 21
+        },
+        ".cli-description": {
+          "font": "16px",
+          "width": 413,
+          "height": 82
+        },
+        ".cli-command": {
+          "font": "15px",
+          "width": 658,
+          "height": 160
+        },
+        ".source-grid a": {
+          "font": "16px",
+          "width": 372,
+          "height": 88
+        },
+        ".hero-figure-note": {
+          "font": "14px",
+          "width": 467,
+          "height": 21
+        }
+      }
+    },
+    {
+      "viewport": 1440,
+      "client": 1425,
+      "pageWidth": 1425,
+      "root": "16.5px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "18.5625px",
+          "width": 1425,
+          "height": 13392
+        },
+        ".hero-description": {
+          "font": "18.5625px",
+          "width": 536,
+          "height": 97
+        },
+        ".hero-actions .button": {
+          "font": "17.5312px",
+          "width": 215,
+          "height": 59
+        },
+        ".hero-meta": {
+          "font": "14.4375px",
+          "width": 467,
+          "height": 26
+        },
+        ".section": {
+          "font": "18.5625px",
+          "width": 1310,
+          "height": 1970
+        },
+        ".story-copy .lead": {
+          "font": "20.625px",
+          "width": 626,
+          "height": 136
+        },
+        ".section-heading p+p": {
+          "font": "18.5625px",
+          "width": 619,
+          "height": 95
+        },
+        ".canvas-heading": {
+          "font": "14.4375px",
+          "width": 784,
+          "height": 75
+        },
+        ".stat-label": {
+          "font": "14.4375px",
+          "width": 371,
+          "height": 22
+        },
+        ".cli-description": {
+          "font": "16.5px",
+          "width": 468,
+          "height": 84
+        },
+        ".cli-command": {
+          "font": "15.4688px",
+          "width": 747,
+          "height": 165
+        },
+        ".source-grid a": {
+          "font": "16.5px",
+          "width": 420,
+          "height": 91
+        },
+        ".hero-figure-note": {
+          "font": "14.4375px",
+          "width": 481,
+          "height": 22
+        }
+      }
+    },
+    {
+      "viewport": 1920,
+      "client": 1905,
+      "pageWidth": 1905,
+      "root": "18px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "20.25px",
+          "width": 1905,
+          "height": 14997
+        },
+        ".hero-description": {
+          "font": "20.25px",
+          "width": 586,
+          "height": 106
+        },
+        ".hero-actions .button": {
+          "font": "19.125px",
+          "width": 235,
+          "height": 64
+        },
+        ".hero-meta": {
+          "font": "15.75px",
+          "width": 510,
+          "height": 28
+        },
+        ".section": {
+          "font": "20.25px",
+          "width": 1751,
+          "height": 2196
+        },
+        ".story-copy .lead": {
+          "font": "22.5px",
+          "width": 688,
+          "height": 149
+        },
+        ".section-heading p+p": {
+          "font": "20.25px",
+          "width": 676,
+          "height": 103
+        },
+        ".canvas-heading": {
+          "font": "15.75px",
+          "width": 1049,
+          "height": 82
+        },
+        ".stat-label": {
+          "font": "15.75px",
+          "width": 512,
+          "height": 24
+        },
+        ".cli-description": {
+          "font": "18px",
+          "width": 635,
+          "height": 61
+        },
+        ".cli-command": {
+          "font": "16.875px",
+          "width": 1014,
+          "height": 180
+        },
+        ".source-grid a": {
+          "font": "18px",
+          "width": 566,
+          "height": 99
+        },
+        ".hero-figure-note": {
+          "font": "15.75px",
+          "width": 526,
+          "height": 24
+        }
+      }
+    },
+    {
+      "viewport": 2560,
+      "client": 2545,
+      "pageWidth": 2545,
+      "root": "20px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "22.5px",
+          "width": 2545,
+          "height": 16601
+        },
+        ".hero-description": {
+          "font": "22.5px",
+          "width": 651,
+          "height": 118
+        },
+        ".hero-actions .button": {
+          "font": "21.25px",
+          "width": 260,
+          "height": 71
+        },
+        ".hero-meta": {
+          "font": "17.5px",
+          "width": 567,
+          "height": 32
+        },
+        ".section": {
+          "font": "22.5px",
+          "width": 2160,
+          "height": 2434
+        },
+        ".story-copy .lead": {
+          "font": "25px",
+          "width": 765,
+          "height": 165
+        },
+        ".section-heading p+p": {
+          "font": "22.5px",
+          "width": 751,
+          "height": 115
+        },
+        ".canvas-heading": {
+          "font": "17.5px",
+          "width": 1294,
+          "height": 91
+        },
+        ".stat-label": {
+          "font": "17.5px",
+          "width": 641,
+          "height": 26
+        },
+        ".cli-description": {
+          "font": "20px",
+          "width": 723,
+          "height": 68
+        },
+        ".cli-command": {
+          "font": "18.75px",
+          "width": 1258,
+          "height": 200
+        },
+        ".source-grid a": {
+          "font": "20px",
+          "width": 700,
+          "height": 110
+        },
+        ".hero-figure-note": {
+          "font": "17.5px",
+          "width": 584,
+          "height": 26
+        }
+      }
+    },
+    {
+      "viewport": 3840,
+      "client": 3825,
+      "pageWidth": 3825,
+      "root": "24px",
+      "small": [],
+      "shortControls": [],
+      "sizes": {
+        "body": {
+          "font": "27px",
+          "width": 3825,
+          "height": 19878
+        },
+        ".hero-description": {
+          "font": "27px",
+          "width": 781,
+          "height": 142
+        },
+        ".hero-actions .button": {
+          "font": "25.5px",
+          "width": 312,
+          "height": 85
+        },
+        ".hero-meta": {
+          "font": "21px",
+          "width": 681,
+          "height": 38
+        },
+        ".section": {
+          "font": "27px",
+          "width": 2592,
+          "height": 2908
+        },
+        ".story-copy .lead": {
+          "font": "30px",
+          "width": 918,
+          "height": 198
+        },
+        ".section-heading p+p": {
+          "font": "27px",
+          "width": 901,
+          "height": 138
+        },
+        ".canvas-heading": {
+          "font": "21px",
+          "width": 1553,
+          "height": 109
+        },
+        ".stat-label": {
+          "font": "21px",
+          "width": 769,
+          "height": 32
+        },
+        ".cli-description": {
+          "font": "24px",
+          "width": 868,
+          "height": 82
+        },
+        ".cli-command": {
+          "font": "22.5px",
+          "width": 1511,
+          "height": 240
+        },
+        ".source-grid a": {
+          "font": "24px",
+          "width": 840,
+          "height": 131
+        },
+        ".hero-figure-note": {
+          "font": "21px",
+          "width": 701,
+          "height": 32
+        }
+      }
+    }
+  ],
+  "enlargedText": {
+    "viewport": 1280,
+    "client": 1265,
+    "pageWidth": 1265,
+    "root": "32px",
+    "small": [],
+    "shortControls": [],
+    "sizes": {
+      "body": {
+        "font": "36px",
+        "width": 1265,
+        "height": 31474
+      },
+      ".hero-description": {
+        "font": "36px",
+        "width": 556,
+        "height": 315
+      },
+      ".hero-actions .button": {
+        "font": "34px",
+        "width": 416,
+        "height": 112
+      },
+      ".hero-meta": {
+        "font": "28px",
+        "width": 556,
+        "height": 101
+      },
+      ".section": {
+        "font": "36px",
+        "width": 1163,
+        "height": 4980
+      },
+      ".story-copy .lead": {
+        "font": "40px",
+        "width": 556,
+        "height": 528
+      },
+      ".section-heading p+p": {
+        "font": "36px",
+        "width": 556,
+        "height": 367
+      },
+      ".canvas-heading": {
+        "font": "28px",
+        "width": 695,
+        "height": 214
+      },
+      ".stat-label": {
+        "font": "28px",
+        "width": 810,
+        "height": 42
+      },
+      ".cli-description": {
+        "font": "32px",
+        "width": 1049,
+        "height": 109
+      },
+      ".cli-command": {
+        "font": "30px",
+        "width": 1047,
+        "height": 320
+      },
+      ".source-grid a": {
+        "font": "32px",
+        "width": 356,
+        "height": 229
+      },
+      ".hero-figure-note": {
+        "font": "28px",
+        "width": 556,
+        "height": 84
+      }
+    }
+  },
+  "pitchChecks": [
+    {
+      "factor": "1",
+      "summary": "48 × 48 × 48 field nodes in this ROI. Coarser grids lose spatial detail.",
+      "spacing": "8.64"
+    },
+    {
+      "factor": "4",
+      "summary": "12 × 12 × 12 field nodes in this ROI. Coarser grids lose spatial detail.",
+      "spacing": "34.56"
+    },
+    {
+      "factor": "8",
+      "summary": "6 × 6 × 6 field nodes in this ROI. Coarser grids lose spatial detail.",
+      "spacing": "69.12"
+    },
+    {
+      "factor": "16",
+      "summary": "3 × 3 × 3 field nodes in this ROI. Coarser grids lose spatial detail.",
+      "spacing": "138.24"
+    },
+    {
+      "factor": "32",
+      "summary": "2 × 2 × 2 field nodes in this ROI. Coarser grids lose spatial detail.",
+      "spacing": "276.48"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "output_frame": {
+    "id": "PHercParis4/20260411134726:L2",
+    "origin_xyz_um": [
+      0,
+      0,
+      0
+    ],
+    "voxel_um": 9.6
+  },
+  "pitch_um": 9.6,
+  "memory_gib": 6
+}
