@@ -1,11 +1,12 @@
-import { initInkPrimer } from './ink-primer.js?v=20261122-fold';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-fold';
-import { initCompactLabs } from './compact-labs.js?v=20261122-fold';
-import { initInkLab } from './ink-lab.js?v=20261122-fold';
-import { initFieldLab } from './field-lab.js?v=20261122-fold';
-import { initCliLab } from './cli-lab.js?v=20261122-fold';
-import { initCluesLab } from './clues-lab.js?v=20261122-fold';
-import { initColdOpen } from './cold-open.js?v=20261122-fold';
+import { initInkPrimer } from './ink-primer.js?v=20261122-book';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-book';
+import { initCompactLabs } from './compact-labs.js?v=20261122-book';
+import { initInkLab } from './ink-lab.js?v=20261122-book';
+import { initFieldLab } from './field-lab.js?v=20261122-book';
+import { initCliLab } from './cli-lab.js?v=20261122-book';
+import { initCluesLab } from './clues-lab.js?v=20261122-book';
+import { initColdOpen } from './cold-open.js?v=20261122-book';
+import { initPager } from './pager.js?v=20261122-book';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);
@@ -14,68 +15,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, t) => a + (b - a) * t;
 const tau = Math.PI * 2;
-$('#menu-toggle').addEventListener('click', () => {
-  const open = $('#mobile-nav').hidden;
-  $('#mobile-nav').hidden = !open;
-  $('#menu-toggle').setAttribute('aria-expanded', String(open));
-  $('#menu-toggle span').textContent = open ? '−' : '＋';
-});
-$$('#mobile-nav a').forEach(a => a.addEventListener('click', () => {
-  $('#mobile-nav').hidden = true;
-  $('#menu-toggle').setAttribute('aria-expanded', 'false');
-  $('#menu-toggle span').textContent = '＋';
-}));
-$$('[data-glossary]').forEach(b => b.addEventListener('click', () => {
-  const target = document.getElementById(`term-${b.dataset.glossary}`);
-  if (target) { target.open = true; target.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'center'}); target.querySelector('summary').focus({preventScroll:true}); }
-}));
-const chapterBar = $('.chapter-bar');
-function updateChapterOffset(){const root=document.documentElement.style,bar=Math.ceil(chapterBar.getBoundingClientRect().height),header=Math.ceil($('.site-header').getBoundingClientRect().height);root.setProperty('--chapter-offset',`${bar+16}px`);root.setProperty('--rail-h',`${bar}px`);root.setProperty('--header-h',`${header}px`);}
-new ResizeObserver(updateChapterOffset).observe(chapterBar);new ResizeObserver(updateChapterOffset).observe($('.site-header'));
-// First screen: header + hero + chapter rail. If the hero fits, the rail sits
-// fully at the bottom of the screen; if not, it starts fully below the fold.
-// Never half-cut. Uses the small viewport height (svh) so mobile toolbars
-// showing or hiding do not resize the hero while someone scrolls.
-const heroSection=$('.hero'),svhProbe=document.createElement('div');
-svhProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
-document.body.append(svhProbe);
-let heroWidth=0;
-function fitHero(force){
-  if(!force&&window.innerWidth===heroWidth)return;
-  heroWidth=window.innerWidth;
-  heroSection.style.minHeight='0px';
-  const natural=heroSection.getBoundingClientRect().height,screen=svhProbe.getBoundingClientRect().height;
-  const header=$('.site-header').getBoundingClientRect().height,rail=chapterBar.getBoundingClientRect().height;
-  const fit=screen-header-rail;
-  heroSection.style.minHeight=`${Math.ceil(natural<=fit?fit:Math.max(natural,screen-header))}px`;
-}
-fitHero(true);
-window.addEventListener('resize',()=>fitHero(false),{passive:true});
-if(document.fonts)document.fonts.ready.then(()=>fitHero(true));
-updateChapterOffset();
-const chapters = ['story','field','solver','unwrap','ink','code','reference'];
-let scrollPending = false;
-let visibleChapter;
-function setChapter() {
-  scrollPending = false;
-  const selected = [...chapters].reverse().find(id => document.getElementById(id).getBoundingClientRect().top < window.innerHeight * .42);
-  $$('.chapter-bar nav a').forEach(a => {
-    const current = a.hash === `#${selected}`;
-    a.classList.toggle('active', current);
-    if (current) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current');
-    // Keep the active chapter visible in its own rail, without moving the page.
-    if(current && selected!==visibleChapter) {
-      const rail=a.parentElement,linkRect=a.getBoundingClientRect(),railRect=rail.getBoundingClientRect();
-      if(linkRect.left<railRect.left || linkRect.right>railRect.right) {
-        rail.scrollTo({left:rail.scrollLeft+linkRect.left-railRect.left-(rail.clientWidth-a.offsetWidth)/2,behavior:'instant'});
-      }
-    }
-  });
-  visibleChapter=selected;
-}
-window.addEventListener('scroll', () => {if (!scrollPending) {scrollPending = true; requestAnimationFrame(setChapter);}}, {passive:true});
-window.addEventListener('resize', () => {visibleChapter=undefined;if(!scrollPending){scrollPending=true;requestAnimationFrame(setChapter);}}, {passive:true});
-setChapter();
+initPager();
+
 
 // Draw in CSS pixels; root-font units keep diagram text in step with the page.
 // Resize/DPR events schedule one redraw, never a permanent animation loop.
@@ -235,59 +176,6 @@ heroMotion.addEventListener('change',updateHeroMotion);
 document.addEventListener('visibilitychange',updateHeroMotion);
 new IntersectionObserver(([entry])=>{heroVisible=entry.isIntersecting;updateHeroMotion();}).observe(heroCanvas);
 
-const eras = {
-  eruption:{image:'./assets/herculaneum-ruins.jpg',alt:'Excavated streets and buildings of Herculaneum',tag:'HERCULANEUM / ITALY',description:'Hot pyroclastic currents carbonized the papyri, and volcanic deposits buried the library. The surviving rolls are brittle and damaged, but can still preserve traces of ancient writing.',credit:'Photograph: Van Der Meulen Christofle · CC0.'},
-  discovery:{image:'./assets/herculaneum-papyri.jpg',alt:'An authentic carbonized papyrus fragment, PHerc.1103, shown in the left panel of a scientific figure',tag:'PHERC.1103 / PAPYRUS FRAGMENT',description:'Excavators recovered papyrus rolls from the Villa of the Papyri between 1752 and 1754. Early cutting, scraping and unrolling methods damaged many manuscripts. The photograph shows a surviving carbonized fragment.',credit:'Stabile et al., 2021 · CC BY 4.0 · left panel displayed with a CSS crop.'},
-  today:{image:'./assets/real/paris4-ct-vertical.jpg',alt:'A vertical X-ray CT cut through PHerc. Paris 4: grey papyrus layers running top to bottom, packed tightly and in places pressed together.',tag:'PHERC. PARIS 4 / X-RAY CT',corner:'REAL SCAN · 5 MM WIDE',description:'Today the scrolls are read from X-ray CT instead. This is a real vertical cut through PHerc. Paris 4: every grey band is papyrus. Neighbouring layers press together, so reconstructing one surface takes more than following bright voxels.',credit:'CT: Vesuvius Challenge, BM18 scan (2026) · CC BY-NC 4.0 · Cropped'}
-};
-let historyCanvasHandler=null;
-$$('[data-era]').forEach(button=>button.addEventListener('click',()=>{
-  const era=button.dataset.era,data=eras[era];
-  $$('[data-era]').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button));});
-  const fig=$('#history-image');fig.classList.toggle('papyrus',era==='discovery');
-  if(historyCanvasHandler){historyCanvasHandler.destroy();historyCanvasHandler=null;}
-  $('#history-description').textContent=data.description;$('#history-credit').textContent=data.credit;
-  if(data.image){
-    fig.innerHTML='<img id="history-photo"><div class="image-tag mono" id="history-image-tag"></div><span class="image-coordinate mono"></span>';
-    const im=fig.querySelector('img');im.src=data.image;im.alt=data.alt;fig.querySelector('.image-tag').textContent=data.tag;fig.querySelector('.image-coordinate').textContent=data.corner||'ARCHAEOLOGICAL EVIDENCE';fig.classList.toggle('ct',era==='today');
-  }else{
-    fig.innerHTML='<canvas role="img" aria-label="Schematic cross-section of one idealized rolled strip"></canvas><div class="image-tag mono">SCHEMATIC / ROLLED STRIP</div><span class="image-coordinate mono">ILLUSTRATION · NOT A REAL SCAN</span>';
-    // Cache the same continuous strip; only its view transform changes on resize.
-    const outline=[],bounds={minX:Infinity,maxX:-Infinity,minY:Infinity,maxY:-Infinity};
-    for(let i=0;i<=5400;i++){
-      const t=i/5400*26*tau,r=(8+1.3*t)*(1+.08*Math.sin(t*3)+.04*Math.cos(t*5));
-      const x=Math.cos(t)*r*.73,y=Math.sin(t)*r*.81;
-      outline.push([x,y]);bounds.minX=Math.min(bounds.minX,x);bounds.maxX=Math.max(bounds.maxX,x);bounds.minY=Math.min(bounds.minY,y);bounds.maxY=Math.max(bounds.maxY,y);
-    }
-    historyCanvasHandler=responsiveCanvas(fig.querySelector('canvas'),(ctx,w,h,rem)=>{
-      ctx.fillStyle='#101411';ctx.fillRect(0,0,w,h);
-      const frame=fig.getBoundingClientRect(),tag=fig.querySelector('.image-tag').getBoundingClientRect(),caption=fig.querySelector('.image-coordinate').getBoundingClientRect();
-      const insetX=rem*1.5,insetTop=Math.max(rem*2,tag.bottom-frame.top+rem*.75),insetBottom=Math.max(rem*2,frame.bottom-caption.top+rem*.75);
-      const availableW=Math.max(1,w-insetX*2),availableH=Math.max(1,h-insetTop-insetBottom),aspect=w/h;
-      const scale=Math.min(availableW/((bounds.maxX-bounds.minX)*aspect),availableH/(bounds.maxY-bounds.minY));
-      const midX=(bounds.minX+bounds.maxX)/2,midY=(bounds.minY+bounds.maxY)/2;
-      // One continuous idealized strip, not independent closed rings or simulated CT.
-      ctx.lineWidth=rem*.072;ctx.lineCap='round';
-      outline.forEach(([px,py],i)=>{
-        if(!i)return;
-        const [prevX,prevY]=outline[i-1];
-        ctx.strokeStyle=windingColor(i/(outline.length-1)*6);
-        ctx.beginPath();
-        ctx.moveTo(w/2+(prevX-midX)*aspect*scale,insetTop+availableH/2+(prevY-midY)*scale);
-        ctx.lineTo(w/2+(px-midX)*aspect*scale,insetTop+availableH/2+(py-midY)*scale);
-        ctx.stroke();
-      });
-    });
-  }
-}));
-
-const pipeline = {
-  scan:{label:'THE INPUT',title:'Look inside without opening it.',text:'CT reconstructs a 3D image from X-ray measurements taken at many angles. PHerc. Paris 4, the scroll used in this guide’s examples, has been scanned several times. Its main full-scroll scans were made at the Institut de France in Paris in 2009 (lab micro-CT, about 24 µm voxels), on the I12 synchrotron beamline at Diamond Light Source in 2019 (7.9 µm), and in 2026 on the ESRF’s BM18 synchrotron beamline in Grenoble at 2.4 µm, plus lower-resolution overviews and higher-resolution partial scans. BM18 uses phase contrast: it records how the sample shifts the X-ray wave as well as how much it absorbs, which sharpens thin boundaries. The volume can reveal layers, folds and gaps, but does not automatically identify which parts belong to the same layer of papyrus.',output:'A 3D GRID OF RECONSTRUCTED CT VALUES',graphic:'scan'},
-  geometry:{label:'WHERE WINDING FIELD FITS',title:'Find structure inside the measurements.',text:'Predicted surface normals, layer spacing and traced fibres constrain a winding-coordinate field, solved first on a coarse grid and then refined locally. Each chosen level of that coordinate becomes a candidate surface to inspect. This is the geometric reconstruction problem at the centre of winding-field.',output:'A FIELD + CANDIDATE SURFACE GEOMETRY',graphic:'field'},
-  flatten:{label:'A DOWNSTREAM CLI WORKFLOW',title:'Give the surface a two-dimensional map.',text:'Turn one level of the field into a triangle mesh with marching cubes, flatten it (often by cutting it into small charts), and use that correspondence to sample the original CT at each mapped point. The CLI produces inspectable images, masks and coordinate maps.',output:'MESHES, FLAT CHARTS & SAMPLED CT',graphic:'flatten'},
-  ink:{label:'A SEPARATE RESEARCH TASK',title:'Look for the physical trace of writing.',text:'Ink detection seeks subtle physical signals at the surface (chapter 05). winding-field and its CLI stop here; ink-sdk (chapter 06) runs ink models.',output:'INK EVIDENCE TO INSPECT',graphic:'ink'},
-  read:{label:'EXPERT INTERPRETATION',title:'Turn evidence into a careful reading.',text:'Papyrologists examine letter shapes, language and context. A plausible word is not enough: the proposed reading must be supported by the recovered evidence.',output:'AN EXAMINED, EVIDENCE-BASED READING',graphic:'read'}
-};
 function pipelineSVG(mode){
   let shapes='';
   if(mode==='scan'){
@@ -299,7 +187,7 @@ function pipelineSVG(mode){
     shapes+='<path d="M20 60 Q60 10 90 60 L90 125 Q55 75 20 125Z" fill="#23351b" stroke="#9ac36e"/><path d="M120 55l85-18v78l-85 18z" fill="#26371d" stroke="#d3f87a"/><path d="M98 85h15m-5-4 5 4-5 4" stroke="#d3f87a"/>';
     for(let i=1;i<5;i++)shapes+=`<path d="M${120+i*17} ${55-i*3.6}v78" stroke="#647b48"/>`;
   }else if(mode==='ink'){
-    for(let i=0;i<12;i++)shapes+=`<path d="M30 ${30+i*9}Q100 ${10+i*9}195 ${27+i*9}" stroke="#677c5155"/>`;
+    for(let i=0;i<12;i++)shapes+=`<path d="M30 ${30+i*9}Q100 ${10+i*9} 195 ${27+i*9}" stroke="#677c5155"/>`;
     for(let i=0;i<5;i++)shapes+=`<rect x="${52+i*27}" y="${67+(i%2)*12}" width="8" height="${14+i*2}" fill="#d3f87a" opacity="${.5+i*.1}"/>`;
     shapes+='<circle cx="117" cy="77" r="44" stroke="#d3f87a"/><path d="M150 108l26 28" stroke="#d3f87a" stroke-width="3"/>';
   }else{
@@ -309,13 +197,14 @@ function pipelineSVG(mode){
   }
   return `<svg viewBox="0 0 230 165" fill="none" xmlns="http://www.w3.org/2000/svg">${shapes}</svg>`;
 }
-function setPipeline(stage){const p=pipeline[stage];$('#pipeline-label').textContent=p.label;$('#pipeline-title').textContent=p.title;$('#pipeline-description').textContent=p.text;$('#pipeline-output').textContent=`OUTPUT → ${p.output}`;$('#pipeline-graphic').innerHTML=pipelineSVG(p.graphic);$$('[data-stage]').forEach(b=>{const on=b.dataset.stage===stage;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});}
-$$('[data-stage]').forEach(b=>b.addEventListener('click',()=>setPipeline(b.dataset.stage)));setPipeline('scan');
+$$('[data-pipe-graphic]').forEach(el=>{el.innerHTML=pipelineSVG(el.dataset.pipeGraphic);});
 
 initCluesLab();
 initColdOpen();
 initFieldLab();
 initCliLab();
+// The "five knobs" notebook link sits in the command builder's form column.
+{const knobs=document.querySelector('#p-code-2 .page-body > details.deep-dive'),configs=document.querySelector('#cli-lab .cli-configs');if(knobs&&configs)configs.after(knobs);}
 initSdkWorkbench();
 initInkLab();
 initCompactLabs();

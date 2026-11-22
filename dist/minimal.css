@@ -313,36 +313,6 @@ main :is(p,li,figcaption,td) a:not(.button):not(.source-link):not(.text-link){te
 .hero-byline .nb{white-space:nowrap}
 
 /* =========================================================
-   Chapter boundaries and navigation (22 Nov 2026)
-   ========================================================= */
-/* Chapter 02 is no longer capped to one screen on large monitors; its
-   content overflowed into chapter 03. */
-#field.compact-section{max-height:none}
-
-/* Every chapter is a full-width band. Bands alternate between the page
-   colour and a tint, with a rule at each boundary and equal space above
-   and below, so it is always clear where one chapter ends. */
-:root{--band:#131913;--band-rule:#3a4733}
-main>.section{
-  width:100%;max-width:none;margin:0;
-  padding-inline:max(var(--page-gutter),calc((100% - var(--content-max)) / 2));
-  padding-block:var(--section-space);
-  background:none;border-top:1px solid var(--band-rule);border-bottom:0;
-}
-main>:is(#real,#story,#field,#solver,#unwrap,#ink,#code,#reference,#sources){margin:0}
-#real,#field,#field+.chapter-transition,#unwrap,#code{background:var(--band)}
-#field.compact-section{padding-bottom:0}
-#field+.chapter-transition{border-top:0;padding-block:var(--block-space) var(--section-space)}
-/* "Follow the evidence" closes chapter 07 rather than starting a new one. */
-#reference{padding-bottom:var(--block-space)}
-#sources{border-top:0;padding-top:0}
-#sources .source-heading{border-top:1px solid var(--line);padding-top:var(--block-space)}
-/* Chapter 02 label matches the other chapters (alignment, size, experiment tag). */
-#field.compact-section .section-kicker{align-items:flex-start;gap:.75rem;min-height:0;font-size:.8125rem;margin-bottom:1.5rem}
-@media (max-width:40rem){#field.compact-section .section-kicker{gap:.25rem;margin-bottom:.5rem}}
-#field.compact-section .section-kicker>span:nth-child(2){display:block}
-
-/* =========================================================
    Header and hero rhythm (22 Nov 2026)
    Logos get room from the window edge; hero spacing groups
    label + title, then question + text + byline, then actions.
@@ -354,8 +324,6 @@ main>:is(#real,#story,#field,#solver,#unwrap,#ink,#code,#reference,#sources){mar
 .hero-description{margin:.75rem 0 0;max-width:36rem}
 .hero-byline{margin:1.25rem 0 0;max-width:36rem}
 .hero-actions{margin-top:clamp(2rem,3vw,2.75rem)}
-/* The chapter rail is framed top and bottom wherever it sits. */
-.chapter-bar{border-top:1px solid var(--line)}
 /* Wide screens: the sheet-switch diagram stays near the reading size
    instead of scaling its labels past the headings. */
 .problem-figure{justify-self:center;width:100%;max-width:34rem}
@@ -368,9 +336,6 @@ main>:is(#real,#story,#field,#solver,#unwrap,#ink,#code,#reference,#sources){mar
   .real-surface .real-surface-grid{grid-column:2;grid-row:1 / -1;max-width:none;margin-top:0}
   .real-surface .real-note{margin-top:1.25rem}
 }
-/* The first screen holds header + hero + the whole chapter rail: the rail is
-   never cut by the fold. Heights come from main.js (--header-h, --rail-h). */
-.hero{min-height:calc(100vh - var(--header-h,6rem) - var(--rail-h,3.75rem));min-height:calc(100svh - var(--header-h,6rem) - var(--rail-h,3.75rem))}
 /* Field chart heading and axis rows size to their own text (the text was
    12px inside rows sized for 10px, so the axis label overflowed by 2px). */
 #field #field-lab .field-chart-heading,#field #field-lab .field-chart-axes{font-size:.75rem;line-height:1.5;min-height:0;padding:.25rem 0}

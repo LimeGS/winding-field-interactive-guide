@@ -64,9 +64,9 @@ export function initCliLab() {
       facts.push('doctor checks the installed environment.', 'demo uses generated curved layers, not an ancient manuscript.', 'The gallery links 3D meshes, flat charts and their correspondence.');
     } else {
       $('#cli-heading').textContent = 'An existing field. A surface to unfold.';
-      $('#cli-description').textContent = 'PHerc. Paris 4 (Scroll 1), scanned on the ESRF’s BM18 beamline and published by the Vesuvius Challenge. This workflow, geometry and ink, uses one CT resolution throughout: 9.6 µm. Stream the published field, extract the W = −60 candidate surface, then flatten the mesh and sample the CT. W has an arbitrary offset, so only differences between W values matter.';
+      $('#cli-description').textContent = 'PHerc. Paris 4 (Scroll 1). Geometry and ink use one CT resolution throughout: 9.6 µm. Stream the published field, extract the W = −60 candidate surface, then flatten the mesh and sample the CT.';
       fields += selectMarkup('action', 'Action', [['flatten', 'Extract mesh & flatten'], ['mesh', 'Extract mesh only']], true);
-      facts.push('The field streams from Hugging Face; no field fitting or model inference.', 'One scale: 9.6 µm. The scan is published as a multiscale pyramid whose first levels are 2.4, 4.8 and 9.6 µm; the path ending in /2 is the 9.6 µm level, and --level 0 means use it as given. The CT is sampled at 9.6 µm, as in ink-sdk below. The field’s 307.2 µm grid (32 × 9.6 µm) is a solver setting, not a second CT scale, and it is coarse: the mesh coordinates are in µm, but its detail is limited by that grid. LSCM flattens each connected surface component (--scope sheet; Linux).');
+      facts.push('The field streams from Hugging Face; no field fitting or model inference.', 'One scale: 9.6 µm. The scan is a multiscale pyramid (2.4, 4.8, 9.6 µm…); the path ending in /2 is its 9.6 µm level, and --level 0 means use it as given. ink-sdk uses the same level.', 'The field’s 307.2 µm grid (32 × 9.6 µm) is a solver setting, not a second CT scale. It is coarse: mesh coordinates are in µm, but their detail is limited by that grid. LSCM flattens each connected surface component (--scope sheet; Linux).');
     }
     $('#cli-fields').innerHTML = fields;
     $('#cli-fields').hidden = !fields;

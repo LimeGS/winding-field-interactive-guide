@@ -21,13 +21,17 @@ Companion to [winding-field](https://github.com/LimeGS/winding-field),
 | Chapter | Topic | Try it |
 |---|---|---|
 | Opening | Real PHerc. Paris 4 CT with the fitted winding field | Before/after slider |
-| 01 The story | Herculaneum, CT scans, why tracing layers fails | Timeline, pipeline, clue explorer |
+| 01 The story | Herculaneum, 250 years of failed unrolling, CT scans, why tracing layers fails | Clue explorer |
 | 02 The field | A coordinate W that counts turns of papyrus | Probe a coherent, drifting or collapsed field |
 | 03 The solver | Weighted least squares, conjugate gradients, "converged ≠ correct" | Run a 72-node solver, inject a bad constraint |
 | 04 The surface | Isosurfaces, marching cubes, flattening, validity masks | Unwrap a surface; real W = −60 result |
 | 05 The ink | Surface volumes, labels, 3D stem + U-Net, pitfalls | Train a tiny ink detector |
 | 06 The code | Real commands for geometry and ink at one 9.6 µm scale | Command builders |
 | 07 Reference | Open problems, glossary, sources | — |
+
+The guide reads like a book: 29 pages, each filling the screen. A bar at the
+bottom carries Back, the chapter index with progress, and Next; scrolling and
+the ← → keys also turn pages.
 
 The PHerc. Paris 4 images are real winding-field output. Everything interactive
 is a small teaching model; the command builders show real commands but do not
