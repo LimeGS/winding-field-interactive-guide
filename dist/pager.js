@@ -3,6 +3,8 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
+import { t } from './i18n.js?v=20261123-i18n';
+
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let sheet;
@@ -130,8 +132,8 @@ export function initPager() {
     next.querySelector('.pager-btn-label').textContent = last ? 'Start over' : index === 0 ? 'Start' : 'Next';
     next.querySelector('.pager-next-title').textContent = last ? '' : pages[index + 1].dataset.title || '';
     next.querySelector('.pager-next-icon').textContent = last ? '↺' : '→';
-    next.setAttribute('aria-label', last ? 'Start over from the cover' : `Next page: ${pages[index + 1].dataset.title}`);
-    back.setAttribute('aria-label', index === 0 ? 'Previous page' : `Previous page: ${pages[index - 1].dataset.title}`);
+    next.setAttribute('aria-label', last ? t('Start over from the cover') : `${t('Next page')}: ${t(pages[index + 1].dataset.title)}`);
+    back.setAttribute('aria-label', index === 0 ? t('Previous page') : `${t('Previous page')}: ${t(pages[index - 1].dataset.title)}`);
 
     links.forEach((link, i) => {
       const active = i === chapterIndex;
@@ -144,8 +146,8 @@ export function initPager() {
     bar.style.width = `${((index + 1) / pages.length) * 100}%`;
     const label = `${chapter.num ? `${chapter.num} ` : ''}${chapter.name}`;
     here.innerHTML = `<span class="pager-here-chapter">${label}</span><span class="pager-here-count">${index + 1} / ${pages.length}</span>`;
-    here.setAttribute('aria-label', `Contents. You are on page ${index + 1} of ${pages.length}: ${page.dataset.title}`);
-    status.textContent = `Page ${index + 1} of ${pages.length}. ${label}: ${page.dataset.title}`;
+    here.setAttribute('aria-label', `${t('Contents')}. ${t('Page')} ${index + 1} / ${pages.length}: ${t(page.dataset.title)}`);
+    status.textContent = `${t('Page')} ${index + 1} / ${pages.length}. ${t(chapter.name)}: ${t(page.dataset.title)}`;
     document.documentElement.dataset.page = page.id;
     if (window.location.hash !== `#${page.id}` && (index > 0 || window.location.hash)) {
       history.replaceState(null, '', index === 0 ? window.location.pathname + window.location.search : `#${page.id}`);
@@ -193,7 +195,7 @@ export function initPager() {
       item.append(sub);
       list.append(item);
     });
-    openSheet('Contents', [list]);
+    openSheet(t('Contents'), [list]);
   });
 
   // Left/right arrows turn the page unless a control that uses them has focus.

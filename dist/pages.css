@@ -430,3 +430,12 @@ dialog.sheet::backdrop{background:#050806b3}
 .page .command-workbench .cli-tabs{margin-bottom:.25rem}
 .page .command-workbench .cli-command{padding-block:.6rem}
 .page .command-workbench{padding-bottom:1rem}
+
+/* ---------- Language selector (top right of the cover) ---------- */
+.lang-switch{display:flex;align-items:center;gap:.25rem;margin-left:auto;padding:.2rem;border:1px solid var(--line);border-radius:6px}
+.lang-switch a{display:inline-flex;align-items:center;justify-content:center;min-width:2.75rem;min-height:2.25rem;padding:0 .5rem;border-radius:4px;color:var(--muted);text-decoration:none;font:.8125rem/1 var(--mono);letter-spacing:.06em}
+.lang-switch a:hover{color:var(--ink)}
+.lang-switch a.active{background:var(--lime);color:#0c100f}
+.lang-switch a:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.page-cover .site-header{flex-wrap:nowrap}
+@media (max-width:40rem){.lang-switch a{min-width:2.25rem;padding:0 .3rem}}

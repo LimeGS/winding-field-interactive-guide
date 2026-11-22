@@ -1,12 +1,13 @@
-import { initInkPrimer } from './ink-primer.js?v=20261122-intros';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-intros';
-import { initCompactLabs } from './compact-labs.js?v=20261122-intros';
-import { initInkLab } from './ink-lab.js?v=20261122-intros';
-import { initFieldLab } from './field-lab.js?v=20261122-intros';
-import { initCliLab } from './cli-lab.js?v=20261122-intros';
-import { initCluesLab } from './clues-lab.js?v=20261122-intros';
-import { initColdOpen } from './cold-open.js?v=20261122-intros';
-import { initPager } from './pager.js?v=20261122-intros';
+import { startI18n } from './i18n.js?v=20261123-i18n';
+import { initInkPrimer } from './ink-primer.js?v=20261123-i18n';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-i18n';
+import { initCompactLabs } from './compact-labs.js?v=20261123-i18n';
+import { initInkLab } from './ink-lab.js?v=20261123-i18n';
+import { initFieldLab } from './field-lab.js?v=20261123-i18n';
+import { initCliLab } from './cli-lab.js?v=20261123-i18n';
+import { initCluesLab } from './clues-lab.js?v=20261123-i18n';
+import { initColdOpen } from './cold-open.js?v=20261123-i18n';
+import { initPager } from './pager.js?v=20261123-i18n';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);
@@ -437,3 +438,6 @@ $('#unwrap-play').addEventListener('click',()=>{
   function frame(now){if(generation!==unwrapAnimation)return;const t=clamp((now-started)/1400,0,1),e=t*t*(3-2*t);unwrapFraction=lerp(start,target,e);updateUnwrap();if(t<1)requestAnimationFrame(frame);}
   requestAnimationFrame(frame);
 });
+
+// Translate the finished page (no-op in English) and keep later text translated.
+startI18n();
