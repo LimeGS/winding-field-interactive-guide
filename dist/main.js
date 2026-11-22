@@ -1,12 +1,12 @@
-import { initInkPrimer } from './ink-primer.js?v=20261122-book';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-book';
-import { initCompactLabs } from './compact-labs.js?v=20261122-book';
-import { initInkLab } from './ink-lab.js?v=20261122-book';
-import { initFieldLab } from './field-lab.js?v=20261122-book';
-import { initCliLab } from './cli-lab.js?v=20261122-book';
-import { initCluesLab } from './clues-lab.js?v=20261122-book';
-import { initColdOpen } from './cold-open.js?v=20261122-book';
-import { initPager } from './pager.js?v=20261122-book';
+import { initInkPrimer } from './ink-primer.js?v=20261122-intros';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-intros';
+import { initCompactLabs } from './compact-labs.js?v=20261122-intros';
+import { initInkLab } from './ink-lab.js?v=20261122-intros';
+import { initFieldLab } from './field-lab.js?v=20261122-intros';
+import { initCliLab } from './cli-lab.js?v=20261122-intros';
+import { initCluesLab } from './clues-lab.js?v=20261122-intros';
+import { initColdOpen } from './cold-open.js?v=20261122-intros';
+import { initPager } from './pager.js?v=20261122-intros';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);

@@ -21,7 +21,7 @@ try {
  assert.equal(result.status,0,result.stderr);const x=result.stdout.trim().split('\n');
  assert.equal(x[0],'infer');assert.equal(x[x.indexOf('--tifxyz')+1],tile);
  assert.equal(x[x.indexOf('--voxel-um')+1],'9.6');
- assert.equal(x[x.indexOf('--profile')+1],'ink_9um@scrollprize-seed43-step75000');
+ assert.equal(x[x.indexOf('--profile')+1],'ink_9um@reader-v3');
  assert(x.includes('--renderer')&&x.includes('--villa')&&x.includes('--ct'));
  console.log('Passed: one-command mesh-to-ink handoff, actual exported tile lookup, space-safe quoting, and matching 9.6 µm scale.');
 } finally {rmSync(fixture,{recursive:true,force:true});}

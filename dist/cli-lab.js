@@ -1,12 +1,13 @@
 const CLI_REVISION = '59e1a105a2fd4016d8a8e508a862d58b13c22f50';
 const CLI_BASE = `https://github.com/LimeGS/winding-field-cli/blob/${CLI_REVISION}`;
-const CT_SOURCE = 's3://vesuvius-challenge-open-data/PHercParis4/volumes/20260411134726-2.400um-0.2m-78keV-masked.zarr/2';
+const CT_VOLUMES = 's3://vesuvius-challenge-open-data/PHercParis4/volumes';
+const CT_SCAN = '20260411134726-2.400um-0.2m-78keV-masked.zarr/2';
 
 export function cliCommand({tab='field',action='flatten'}={}) {
   if(tab==='demo')return 'winding-field doctor\nwinding-field demo --output runs/demo\n\n# Open runs/demo/index.html after the demo finishes.';
   const mesh = 'mkdir -p runs exports\n\nwinding-field prepared mesh --config paris4-remote.json \\\n  --output runs/paris4-W-60';
   if (action === 'mesh') return mesh;
-  return `${mesh}\n\nCT='${CT_SOURCE}'\n\nwinding-field export-sheets --mesh-bundle runs/paris4-W-60 \\\n  --flattening-solver lscm --scope sheet \\\n  --flattening-config paris4-flattening.json \\\n  --source "$CT" --voxel-um 9.6 --level 0 \\\n  --export-tifxyz --output exports/paris4-W-60`;
+  return `${mesh}\n\nVOLUMES='${CT_VOLUMES}'\nCT="$VOLUMES/${CT_SCAN}"\n\nwinding-field export-sheets --mesh-bundle runs/paris4-W-60 \\\n  --flattening-solver lscm --scope sheet \\\n  --flattening-config paris4-flattening.json \\\n  --source "$CT" --voxel-um 9.6 --level 0 \\\n  --export-tifxyz --output exports/paris4-W-60`;
 }
 
 /** A command builder. It executes no commands. */

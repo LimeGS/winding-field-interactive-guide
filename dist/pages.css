@@ -382,3 +382,51 @@ dialog.sheet::backdrop{background:#050806b3}
   .page .experiment-mission{margin-bottom:.4rem;padding-block:.3rem}
   .page .solver-visual .solver-chart-scroll canvas{height:clamp(13.5rem,calc(var(--page-h) - 22.5rem),28rem)}
 }
+
+/* =========================================================
+   Experiment intros: what it is, what the controls do, what to watch
+   ========================================================= */
+.lab-intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem 2rem;margin:0 0 .9rem;padding:.75rem 1rem;border:1px solid var(--line);border-left:2px solid var(--lime);background:#111a13}
+.lab-intro-label{display:block;margin-bottom:.25rem;font-size:.75rem;letter-spacing:.06em;color:var(--lime)}
+.lab-intro p{margin:0;font-size:.9375rem;line-height:1.5;color:var(--ink);max-width:none}
+#ink-experiment .section-heading{grid-template-columns:minmax(0,.55fr) minmax(0,2fr);align-items:center}
+#ink-experiment .section-heading .lab-intro{margin:0}
+@media (max-width:64rem){.lab-intro{grid-template-columns:1fr}#ink-experiment .section-heading{grid-template-columns:1fr}}
+/* The intro takes about 6rem; each experiment gives that height back. */
+@media (min-width:50.01rem){
+  .page #field #field-lab{height:clamp(24rem,calc(var(--page-h) - 16.5rem),44rem)}
+  .page #ink-lab{height:clamp(27rem,calc(var(--page-h) - 15.5rem),46rem)}
+}
+.page .solver-visual .solver-chart-scroll canvas{height:clamp(15rem,calc(var(--page-h) - 30.5rem),31rem)}
+.page .unwrap-lab canvas{height:clamp(13rem,calc(var(--page-h) - 35rem),30rem)}
+@media (min-width:64.01rem) and (max-height:880px){
+  .lab-intro{padding:.5rem .75rem;margin-bottom:.5rem}
+  .lab-intro p{font-size:.875rem}
+  .page .solver-visual .solver-chart-scroll canvas{height:clamp(13.5rem,calc(var(--page-h) - 27.5rem),28rem)}
+}
+.lab-intro p{font-size:.875rem;line-height:1.5}
+.page .page-body>.lab-intro~.experiment-shell,.page .page-body>.lab-intro~.solver-grid{margin-top:0!important}
+#ink-experiment .section-heading{display:block!important}
+#ink-experiment .section-heading h3{margin:0 0 .6rem}
+.page .solver-controls .range-control small{display:none}
+@media (min-width:50.01rem){
+  .page #field #field-lab{height:clamp(24rem,calc(var(--page-h) - 19rem),44rem)}
+  .page #ink-lab{height:clamp(27rem,calc(var(--page-h) - 17rem),46rem)}
+}
+.page .solver-visual .solver-chart-scroll canvas{height:clamp(15rem,calc(var(--page-h) - 29rem),31rem)}
+.page .unwrap-lab canvas{height:clamp(13rem,calc(var(--page-h) - 34rem),30rem)}
+@media (min-width:75rem){
+  .page .command-workbench .cli-console{position:relative}
+  .page .command-workbench .cli-label{display:none}
+  .page .command-workbench .cli-actions{position:absolute;top:.3rem;right:.6rem;padding:0}
+  .page .command-workbench .cli-btn{min-height:2rem;padding:.25rem .75rem;font-size:.8125rem}
+}
+@media (min-width:50.01rem){#field .page #field-lab{height:clamp(24rem,calc(var(--page-h) - 19rem),44rem)}}
+#ink-experiment .section-heading>div{max-width:none;width:100%}
+.page .solver-controls .control-description{display:none}
+.page .solver-visual .solver-chart-scroll canvas{height:clamp(15rem,calc(var(--page-h) - 31rem),31rem)}
+.lab-intro{margin-bottom:.6rem}
+.page .command-workbench .cli-facts{margin-top:.5rem;padding-top:.5rem}
+.page .command-workbench .cli-tabs{margin-bottom:.25rem}
+.page .command-workbench .cli-command{padding-block:.6rem}
+.page .command-workbench{padding-bottom:1rem}
