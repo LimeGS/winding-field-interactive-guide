@@ -468,3 +468,7 @@ html:not([lang="en"]) #real .ct-compare{max-width:calc(var(--page-h) - 17rem)}
   html:not([lang="en"]) .page .command-workbench .cli-configs a{min-height:2rem}
   html:not([lang="en"]) .page .command-workbench .cli-fields select{min-height:2.5rem}
 }
+html[lang="fr"] .page .solver-visual .solver-chart-scroll canvas{height:clamp(13.5rem,calc(var(--page-h) - 34.5rem),31rem)}
+html:not([lang="en"]) .page .solver-controls h3{font-size:1.25rem;line-height:1.25}
+html:not([lang="en"]) .page .solver-controls .range-control{margin:.45rem 0}
+@media (min-width:64.01rem) and (max-height:880px){.page .command-workbench .cli-tabs{margin-bottom:0}}

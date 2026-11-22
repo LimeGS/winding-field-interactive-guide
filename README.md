@@ -33,6 +33,10 @@ The guide reads like a book: 29 pages, each filling the screen. A bar at the
 bottom carries Back, the chapter index with progress, and Next; scrolling and
 the ← → keys also turn pages.
 
+The guide is available in English, Spanish and French (selector at the top
+right, or `?lang=es` / `?lang=fr`). Translations live in `dist/i18n/` as
+tables keyed by the English text; anything without an entry stays in English.
+
 The PHerc. Paris 4 images are real winding-field output. Everything interactive
 is a small teaching model; the command builders show real commands but do not
 run them.
