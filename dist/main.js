@@ -1,13 +1,13 @@
-import { startI18n } from './i18n.js?v=20261123-i18n';
-import { initInkPrimer } from './ink-primer.js?v=20261123-i18n';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-i18n';
-import { initCompactLabs } from './compact-labs.js?v=20261123-i18n';
-import { initInkLab } from './ink-lab.js?v=20261123-i18n';
-import { initFieldLab } from './field-lab.js?v=20261123-i18n';
-import { initCliLab } from './cli-lab.js?v=20261123-i18n';
-import { initCluesLab } from './clues-lab.js?v=20261123-i18n';
-import { initColdOpen } from './cold-open.js?v=20261123-i18n';
-import { initPager } from './pager.js?v=20261123-i18n';
+import { startI18n } from './i18n.js?v=20261123-cover';
+import { initInkPrimer } from './ink-primer.js?v=20261123-cover';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-cover';
+import { initCompactLabs } from './compact-labs.js?v=20261123-cover';
+import { initInkLab } from './ink-lab.js?v=20261123-cover';
+import { initFieldLab } from './field-lab.js?v=20261123-cover';
+import { initCliLab } from './cli-lab.js?v=20261123-cover';
+import { initCluesLab } from './clues-lab.js?v=20261123-cover';
+import { initColdOpen } from './cold-open.js?v=20261123-cover';
+import { initPager } from './pager.js?v=20261123-cover';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);

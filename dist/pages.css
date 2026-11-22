@@ -441,7 +441,7 @@ dialog.sheet::backdrop{background:#050806b3}
 @media (max-width:40rem){.lang-switch a{min-width:2.25rem;padding:0 .3rem}}
 
 /* Spanish and French run about 15-20% longer than English. */
-html:not([lang="en"]) .page-cover .hero h1{font-size:min(4.9vw,8.4vh)}
+@media (min-width:60.01rem){html:not([lang="en"]) .page-cover .hero h1{font-size:min(4.9vw,8.4vh)}}
 html:not([lang="en"]) .hero-description{max-width:40rem}
 html:not([lang="en"]) .timeline p{font-size:.875rem;line-height:1.5}
 html:not([lang="en"]) .timeline li{padding:.6rem 0}
@@ -472,3 +472,22 @@ html[lang="fr"] .page .solver-visual .solver-chart-scroll canvas{height:clamp(13
 html:not([lang="en"]) .page .solver-controls h3{font-size:1.25rem;line-height:1.25}
 html:not([lang="en"]) .page .solver-controls .range-control{margin:.45rem 0}
 @media (min-width:64.01rem) and (max-height:880px){.page .command-workbench .cli-tabs{margin-bottom:0}}
+
+/* Phones and narrow tablets: the animated scroll sits right under the title,
+   before "How do you read a book you cannot open?". */
+@media (max-width:60rem){
+  .page-cover .hero{display:flex;flex-direction:column;align-items:stretch;gap:0}
+  .page-cover .hero-copy{display:contents}
+  .page-cover .hero .eyebrow{order:1}
+  .page-cover .hero h1{order:2}
+  .page-cover .hero-specimen{order:3;margin:1rem auto 0;height:min(26rem,62vw + 6rem)}
+  .page-cover .hero-question{order:4}
+  .page-cover .hero-description{order:5}
+  .page-cover .hero-byline{order:6}
+  .page-cover .hero-actions{order:7}
+}
+@media (max-width:60rem){
+  .page-cover .hero-view-controls{width:100%;max-width:26rem;font-size:.8125rem}
+  .page-cover .hero-view-controls button{padding-inline:.4rem;white-space:normal;line-height:1.2}
+}
+@media (max-width:60rem){.page-cover .hero-view-controls{align-self:center;margin-inline:auto}}

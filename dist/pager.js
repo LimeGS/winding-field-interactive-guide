@@ -3,7 +3,7 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
-import { t } from './i18n.js?v=20261123-i18n';
+import { t } from './i18n.js?v=20261123-cover';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -129,7 +129,7 @@ export function initPager() {
 
     back.disabled = index === 0;
     next.classList.toggle('pager-restart', last);
-    next.querySelector('.pager-btn-label').textContent = last ? 'Start over' : index === 0 ? 'Start' : 'Next';
+    next.querySelector('.pager-btn-label').textContent = last ? 'Start over' : index === 0 ? 'Start reading' : 'Next';
     next.querySelector('.pager-next-title').textContent = last ? '' : pages[index + 1].dataset.title || '';
     next.querySelector('.pager-next-icon').textContent = last ? '↺' : '→';
     next.setAttribute('aria-label', last ? t('Start over from the cover') : `${t('Next page')}: ${t(pages[index + 1].dataset.title)}`);

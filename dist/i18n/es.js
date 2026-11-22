@@ -858,5 +858,6 @@ export default {
 "#-slice CT patch": "Parche de CT de # cortes",
 "Local #D stem": "Stem #D local",
 "#D U-Net: context + detail": "U-Net #D: contexto + detalle",
-"#D ink scores": "Puntuaciones de tinta #D"
+"#D ink scores": "Puntuaciones de tinta #D",
+"Start reading": "Empezar a leer"
 };
