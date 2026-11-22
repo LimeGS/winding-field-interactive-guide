@@ -311,3 +311,33 @@ main :is(p,li,figcaption,td) a:not(.button):not(.source-link):not(.text-link){te
   .chapter-bar nav{padding-right:2.5rem;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 2.5rem),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 2.5rem),transparent)}
 }
 .hero-byline .nb{white-space:nowrap}
+
+/* =========================================================
+   Chapter boundaries and navigation (22 Nov 2026)
+   ========================================================= */
+/* Chapter 02 is no longer capped to one screen on large monitors; its
+   content overflowed into chapter 03. */
+#field.compact-section{max-height:none}
+
+/* Every chapter is a full-width band. Bands alternate between the page
+   colour and a tint, with a rule at each boundary and equal space above
+   and below, so it is always clear where one chapter ends. */
+:root{--band:#131913;--band-rule:#3a4733}
+main>.section{
+  width:100%;max-width:none;margin:0;
+  padding-inline:max(var(--page-gutter),calc((100% - var(--content-max)) / 2));
+  padding-block:var(--section-space);
+  background:none;border-top:1px solid var(--band-rule);border-bottom:0;
+}
+main>:is(#real,#story,#field,#solver,#unwrap,#ink,#code,#reference,#sources){margin:0}
+#real,#field,#field+.chapter-transition,#unwrap,#code{background:var(--band)}
+#field.compact-section{padding-bottom:0}
+#field+.chapter-transition{border-top:0;padding-block:var(--block-space) var(--section-space)}
+/* "Follow the evidence" closes chapter 07 rather than starting a new one. */
+#reference{padding-bottom:var(--block-space)}
+#sources{border-top:0;padding-top:0}
+#sources .source-heading{border-top:1px solid var(--line);padding-top:var(--block-space)}
+/* Chapter 02 label matches the other chapters (alignment, size, experiment tag). */
+#field.compact-section .section-kicker{align-items:flex-start;gap:.75rem;min-height:0;font-size:.8125rem;margin-bottom:1.5rem}
+@media (max-width:40rem){#field.compact-section .section-kicker{gap:.25rem;margin-bottom:.5rem}}
+#field.compact-section .section-kicker>span:nth-child(2){display:block}
