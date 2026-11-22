@@ -1,11 +1,11 @@
-import { initInkPrimer } from './ink-primer.js?v=20261122-rhythm';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-rhythm';
-import { initCompactLabs } from './compact-labs.js?v=20261122-rhythm';
-import { initInkLab } from './ink-lab.js?v=20261122-rhythm';
-import { initFieldLab } from './field-lab.js?v=20261122-rhythm';
-import { initCliLab } from './cli-lab.js?v=20261122-rhythm';
-import { initCluesLab } from './clues-lab.js?v=20261122-rhythm';
-import { initColdOpen } from './cold-open.js?v=20261122-rhythm';
+import { initInkPrimer } from './ink-primer.js?v=20261122-fold';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-fold';
+import { initCompactLabs } from './compact-labs.js?v=20261122-fold';
+import { initInkLab } from './ink-lab.js?v=20261122-fold';
+import { initFieldLab } from './field-lab.js?v=20261122-fold';
+import { initCliLab } from './cli-lab.js?v=20261122-fold';
+import { initCluesLab } from './clues-lab.js?v=20261122-fold';
+import { initColdOpen } from './cold-open.js?v=20261122-fold';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);
@@ -30,8 +30,28 @@ $$('[data-glossary]').forEach(b => b.addEventListener('click', () => {
   if (target) { target.open = true; target.scrollIntoView({behavior:reducedMotion?'instant':'smooth',block:'center'}); target.querySelector('summary').focus({preventScroll:true}); }
 }));
 const chapterBar = $('.chapter-bar');
-function updateChapterOffset(){document.documentElement.style.setProperty('--chapter-offset',`${Math.ceil(chapterBar.getBoundingClientRect().height)+16}px`);}
-new ResizeObserver(updateChapterOffset).observe(chapterBar);
+function updateChapterOffset(){const root=document.documentElement.style,bar=Math.ceil(chapterBar.getBoundingClientRect().height),header=Math.ceil($('.site-header').getBoundingClientRect().height);root.setProperty('--chapter-offset',`${bar+16}px`);root.setProperty('--rail-h',`${bar}px`);root.setProperty('--header-h',`${header}px`);}
+new ResizeObserver(updateChapterOffset).observe(chapterBar);new ResizeObserver(updateChapterOffset).observe($('.site-header'));
+// First screen: header + hero + chapter rail. If the hero fits, the rail sits
+// fully at the bottom of the screen; if not, it starts fully below the fold.
+// Never half-cut. Uses the small viewport height (svh) so mobile toolbars
+// showing or hiding do not resize the hero while someone scrolls.
+const heroSection=$('.hero'),svhProbe=document.createElement('div');
+svhProbe.style.cssText='position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none';
+document.body.append(svhProbe);
+let heroWidth=0;
+function fitHero(force){
+  if(!force&&window.innerWidth===heroWidth)return;
+  heroWidth=window.innerWidth;
+  heroSection.style.minHeight='0px';
+  const natural=heroSection.getBoundingClientRect().height,screen=svhProbe.getBoundingClientRect().height;
+  const header=$('.site-header').getBoundingClientRect().height,rail=chapterBar.getBoundingClientRect().height;
+  const fit=screen-header-rail;
+  heroSection.style.minHeight=`${Math.ceil(natural<=fit?fit:Math.max(natural,screen-header))}px`;
+}
+fitHero(true);
+window.addEventListener('resize',()=>fitHero(false),{passive:true});
+if(document.fonts)document.fonts.ready.then(()=>fitHero(true));
 updateChapterOffset();
 const chapters = ['story','field','solver','unwrap','ink','code','reference'];
 let scrollPending = false;

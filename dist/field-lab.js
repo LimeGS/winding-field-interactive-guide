@@ -239,12 +239,25 @@ export function initFieldLab() {
     if (!Number.isFinite(width) || width <= 0) return;
     const rem = parseFloat(window.getComputedStyle(document.documentElement).fontSize) || 16;
     state.width = width; state.rem = rem;
-    state.height = Math.max(32, canvas.parentElement.clientHeight - (width<600?44:78));
+    // Fill the space left by the chart's own heading and axis rows, measured
+    // rather than guessed, so the axis label is never pushed out of the frame.
+    const wrap = canvas.parentElement, wrapStyle = window.getComputedStyle(wrap);
+    const chrome = [...wrap.children].filter(el => el !== canvas && window.getComputedStyle(el).position !== 'absolute')
+      .reduce((sum, el) => sum + el.getBoundingClientRect().height, 0);
+    const inner = wrap.clientHeight - parseFloat(wrapStyle.paddingTop || 0) - parseFloat(wrapStyle.paddingBottom || 0);
+    state.height = Math.max(32, Math.floor(inner - chrome));
     const deviceRatio = window.devicePixelRatio || 1;
     const dpr = Number.isFinite(deviceRatio) && deviceRatio > 0 ? deviceRatio : 1;
     canvas.width = Math.max(1, Math.round(width * dpr));
     canvas.height = Math.max(1, Math.round(state.height * dpr));
     canvas.style.height = `${state.height}px`;
+    // Correct for margins and gaps the measurement above cannot see.
+    const overflow = wrap.scrollHeight - wrap.clientHeight;
+    if (overflow > 0 && state.height - overflow >= 32) {
+      state.height -= overflow;
+      canvas.height = Math.max(1, Math.round(state.height * dpr));
+      canvas.style.height = `${state.height}px`;
+    }
     if (ctx) ctx.setTransform(canvas.width / width, 0, 0, canvas.height / state.height, 0, 0);
     render();
   }
@@ -269,6 +282,9 @@ export function initFieldLab() {
   if (typeof ResizeObserver !== 'undefined') {
     const observer = new ResizeObserver(resize);
     observer.observe(canvas.parentElement);
+    // The heading and axis rows can change height (fonts, layout moves).
+    [...canvas.parentElement.children].filter(el => el !== canvas).forEach(el => observer.observe(el));
   }
+  if (document.fonts) document.fonts.ready.then(resize);
   window.addEventListener('resize', resize, { passive: true });
 }
