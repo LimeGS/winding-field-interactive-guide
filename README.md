@@ -24,7 +24,7 @@ Companion to [winding-field](https://github.com/LimeGS/winding-field),
 | 01 The story | Herculaneum, CT scans, why tracing layers fails | Timeline, pipeline, clue explorer |
 | 02 The field | A coordinate W that counts turns of papyrus | Probe a coherent, drifting or collapsed field |
 | 03 The solver | Weighted least squares, conjugate gradients, "converged ≠ correct" | Run a 72-node solver, inject a bad constraint |
-| 04 The surface | Isosurfaces, marching cubes, flattening, measured error | Unwrap a surface; real W = −60 result |
+| 04 The surface | Isosurfaces, marching cubes, flattening, validity masks | Unwrap a surface; real W = −60 result |
 | 05 The ink | Surface volumes, labels, 3D stem + U-Net, pitfalls | Train a tiny ink detector |
 | 06 The code | Real commands for geometry and ink at one 9.6 µm scale | Command builders |
 | 07 Reference | Open problems, glossary, sources | — |
