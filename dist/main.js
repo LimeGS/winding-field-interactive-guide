@@ -1,11 +1,11 @@
-import { initInkPrimer } from './ink-primer.js?v=20261122-bands';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-bands';
-import { initCompactLabs } from './compact-labs.js?v=20261122-bands';
-import { initInkLab } from './ink-lab.js?v=20261122-bands';
-import { initFieldLab } from './field-lab.js?v=20261122-bands';
-import { initCliLab } from './cli-lab.js?v=20261122-bands';
-import { initCluesLab } from './clues-lab.js?v=20261122-bands';
-import { initColdOpen } from './cold-open.js?v=20261122-bands';
+import { initInkPrimer } from './ink-primer.js?v=20261122-rhythm';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261122-rhythm';
+import { initCompactLabs } from './compact-labs.js?v=20261122-rhythm';
+import { initInkLab } from './ink-lab.js?v=20261122-rhythm';
+import { initFieldLab } from './field-lab.js?v=20261122-rhythm';
+import { initCliLab } from './cli-lab.js?v=20261122-rhythm';
+import { initCluesLab } from './clues-lab.js?v=20261122-rhythm';
+import { initColdOpen } from './cold-open.js?v=20261122-rhythm';
 import { windingColor, windingGradient } from './winding-colors.js';
 
 const $ = s => document.querySelector(s);

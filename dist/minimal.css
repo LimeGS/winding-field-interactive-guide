@@ -341,3 +341,30 @@ main>:is(#real,#story,#field,#solver,#unwrap,#ink,#code,#reference,#sources){mar
 #field.compact-section .section-kicker{align-items:flex-start;gap:.75rem;min-height:0;font-size:.8125rem;margin-bottom:1.5rem}
 @media (max-width:40rem){#field.compact-section .section-kicker{gap:.25rem;margin-bottom:.5rem}}
 #field.compact-section .section-kicker>span:nth-child(2){display:block}
+
+/* =========================================================
+   Header and hero rhythm (22 Nov 2026)
+   Logos get room from the window edge; hero spacing groups
+   label + title, then question + text + byline, then actions.
+   ========================================================= */
+.site-header{min-height:0;padding-block:clamp(1.25rem,2.5vw,2.25rem) .5rem}
+.hero .eyebrow{margin:0}
+.hero h1{margin:1.25rem 0 0}
+.hero-question{margin:clamp(1.75rem,2.6vw,2.5rem) 0 0}
+.hero-description{margin:.75rem 0 0;max-width:36rem}
+.hero-byline{margin:1.25rem 0 0;max-width:36rem}
+.hero-actions{margin-top:clamp(2rem,3vw,2.75rem)}
+/* The chapter rail is framed top and bottom wherever it sits. */
+.chapter-bar{border-top:1px solid var(--line)}
+/* Wide screens: the sheet-switch diagram stays near the reading size
+   instead of scaling its labels past the headings. */
+.problem-figure{justify-self:center;width:100%;max-width:34rem}
+/* Wide screens: the real W = −60 figure sits beside its text instead of
+   leaving the right half of the chapter empty. */
+@media (min-width:75rem){
+  .real-surface{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);grid-template-rows:auto auto auto auto 1fr;column-gap:var(--layout-gap);align-items:start}
+  .real-surface>*{grid-column:1}
+  .real-surface h3{margin-top:.75rem}
+  .real-surface .real-surface-grid{grid-column:2;grid-row:1 / -1;max-width:none;margin-top:0}
+  .real-surface .real-note{margin-top:1.25rem}
+}
