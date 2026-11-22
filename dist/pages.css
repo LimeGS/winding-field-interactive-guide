@@ -430,3 +430,41 @@ dialog.sheet::backdrop{background:#050806b3}
 .page .command-workbench .cli-tabs{margin-bottom:.25rem}
 .page .command-workbench .cli-command{padding-block:.6rem}
 .page .command-workbench{padding-bottom:1rem}
+
+/* ---------- Language selector (top right of the cover) ---------- */
+.lang-switch{display:flex;align-items:center;gap:.25rem;margin-left:auto;padding:.2rem;border:1px solid var(--line);border-radius:6px}
+.lang-switch a{display:inline-flex;align-items:center;justify-content:center;min-width:2.75rem;min-height:2.25rem;padding:0 .5rem;border-radius:4px;color:var(--muted);text-decoration:none;font:.8125rem/1 var(--mono);letter-spacing:.06em}
+.lang-switch a:hover{color:var(--ink)}
+.lang-switch a.active{background:var(--lime);color:#0c100f}
+.lang-switch a:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.page-cover .site-header{flex-wrap:nowrap}
+@media (max-width:40rem){.lang-switch a{min-width:2.25rem;padding:0 .3rem}}
+
+/* Spanish and French run about 15-20% longer than English. */
+html:not([lang="en"]) .page-cover .hero h1{font-size:min(4.9vw,8.4vh)}
+html:not([lang="en"]) .hero-description{max-width:40rem}
+html:not([lang="en"]) .timeline p{font-size:.875rem;line-height:1.5}
+html:not([lang="en"]) .timeline li{padding:.6rem 0}
+html:not([lang="en"]) .lab-intro p{font-size:.8125rem;line-height:1.45}
+html:not([lang="en"]) .lab-intro{padding:.5rem .9rem;margin-bottom:.5rem}
+html:not([lang="en"]) .page #clues-lab .clues-tool>p{font-size:.875rem;line-height:1.5}
+html:not([lang="en"]) .page #clues-lab .clues-kicker{display:none}
+html:not([lang="en"]) .page .command-workbench .cli-facts{font-size:.8125rem;line-height:1.45}
+html:not([lang="en"]) .page .command-workbench .cli-description{font-size:.9375rem;line-height:1.5}
+html:not([lang="en"]) .page .command-workbench .cli-heading{font-size:1.25rem}
+html:not([lang="en"]) .page .solver-visual .solver-chart-scroll canvas{height:clamp(13.5rem,calc(var(--page-h) - 33.5rem),31rem)}
+html:not([lang="en"]) .term p{font-size:.875rem;line-height:1.5}
+@media (min-width:50.01rem){html:not([lang="en"]) #field .page #field-lab{height:clamp(24rem,calc(var(--page-h) - 20rem),44rem)}}
+html:not([lang="en"]) .page .command-workbench .cli-configs p{font-size:.875rem}
+html:not([lang="en"]) .page .command-workbench .cli-fields{margin-bottom:.4rem}
+html:not([lang="en"]) .page .command-workbench .cli-description{margin-bottom:.4rem}
+html:not([lang="en"]) .page .command-workbench .cli-command{font-size:.8125rem;line-height:1.5}
+html:not([lang="en"]) #real .ct-compare{max-width:calc(var(--page-h) - 17rem)}
+@media (min-width:75rem){html:not([lang="en"]) .page .command-workbench .cli-grid>div:first-child>.cli-facts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:75rem){
+  html:not([lang="en"]) .page .command-workbench .cli-grid>div:first-child>.cli-facts{margin-top:.4rem;padding-top:.5rem;gap:.4rem 1.5rem}
+  html:not([lang="en"]) .page .command-workbench{padding-block:.6rem .75rem}
+  html:not([lang="en"]) .page .command-workbench .cli-heading{margin-bottom:.4rem}
+  html:not([lang="en"]) .page .command-workbench .cli-configs a{min-height:2rem}
+  html:not([lang="en"]) .page .command-workbench .cli-fields select{min-height:2.5rem}
+}
