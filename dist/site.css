@@ -1961,3 +1961,57 @@ html:not([lang="en"]) .page .solver-controls .range-control{margin:.45rem 0}
 .page-body:has(>details:last-child){align-self:stretch;display:flex;flex-direction:column}
 .page-body:has(>details:last-child)>:first-child{margin-top:auto!important}
 .page .page-body>details:last-child{margin-top:auto!important}
+
+/* ==== Ink lab: status badges, next-step highlight, view switch ==== */
+#ink-lab [hidden]{display:none!important}
+#ink-lab .ink-run-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem 1.5rem;flex-wrap:wrap;grid-column:1/-1}
+#ink-lab .ink-run-head h3{margin:0}
+#ink-lab .ink-run{display:inline-flex;align-items:center;gap:.6rem;padding:.4rem .75rem;border:1px solid var(--line);background:#121a13;font:.75rem/1.2 var(--mono);color:var(--muted);min-width:min(100%,24rem)}
+#ink-lab .ink-run-dot{width:.6rem;height:.6rem;border-radius:50%;background:#5d6b58;flex:none}
+#ink-lab .ink-run-label{color:var(--ink);white-space:nowrap}
+#ink-lab .ink-run-bar{flex:1 1 6rem;min-width:4rem;height:.375rem;background:#2b3628;overflow:hidden;border-radius:1px}
+#ink-lab .ink-run-bar i{display:block;height:100%;width:100%;background:var(--lime);transform:scaleX(0);transform-origin:left center;transition:transform .35s linear}
+#ink-lab .ink-run-value{white-space:nowrap;font-variant-numeric:tabular-nums}
+#ink-lab .ink-run[data-state="running"]{border-color:#5f7a3c}
+#ink-lab .ink-run[data-state="running"] .ink-run-dot{background:var(--lime);animation:ink-pulse 1.1s ease-in-out infinite}
+#ink-lab .ink-run[data-state="paused"] .ink-run-dot{background:#e8c36a}
+#ink-lab .ink-run[data-state="paused"] .ink-run-bar i{background:#e8c36a}
+#ink-lab .ink-run[data-state="done"]{border-color:var(--lime);background:#1b2914}
+#ink-lab .ink-run[data-state="done"] .ink-run-dot{background:var(--lime);box-shadow:0 0 0 3px #d3f87a33}
+#ink-lab .ink-run[data-state="done"] .ink-run-label{color:var(--lime)}
+#ink-lab .ink-run[data-state="done"] .ink-run-label::before{content:"✓ "}
+@keyframes ink-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+@keyframes ink-cta{0%,100%{box-shadow:0 0 0 0 #d3f87a00}50%{box-shadow:0 0 0 6px #d3f87a40}}
+#ink-lab .ink-cta{animation:ink-cta 1.6s ease-in-out 3}
+#ink-lab .ink-view-seg{display:flex;flex-wrap:wrap;gap:4px}
+#ink-lab .ink-view-seg.ink-cta{border-radius:2px}
+#ink-lab .ink-view-seg .ink-tool[aria-pressed="true"]{border-color:var(--lime);color:var(--lime);background:#1d2a16}
+#ink-lab .ink-mask-counts .ok{color:var(--lime)}
+#ink-lab .ink-mask-counts .ok::before{content:"✓ "}
+@media (prefers-reduced-motion:reduce){#ink-lab .ink-run-bar i{transition:none}}
+#ink-lab .ink-run-head h3{font-size:18px}
+@media (max-width:800px),(max-height:450px){
+  #ink-lab .ink-run-head h3{display:none}
+  #ink-lab .ink-run{min-width:0;width:100%;padding:.3rem .5rem;font-size:.6875rem}
+}
+#ink-lab .ink-train-grid[data-phase="-1"] .ink-lab-panel{opacity:1}
+/* The pager keeps the reader's page in place itself (see pager.js). */
+html{overflow-anchor:none}
+@media (max-width:800px){
+  html[lang="es"] #ink-lab .ink-lab-steps button:nth-child(1)::after{content:'Etiquetar'}
+  html[lang="es"] #ink-lab .ink-lab-steps button:nth-child(2)::after{content:'Entrenar'}
+  html[lang="es"] #ink-lab .ink-lab-steps button:nth-child(3)::after{content:'Predecir'}
+  html[lang="fr"] #ink-lab .ink-lab-steps button:nth-child(1)::after{content:'Étiqueter'}
+  html[lang="fr"] #ink-lab .ink-lab-steps button:nth-child(2)::after{content:'Entraîner'}
+  html[lang="fr"] #ink-lab .ink-lab-steps button:nth-child(3)::after{content:'Prédire'}
+}
+@media (max-width:800px),(max-height:450px){
+  #ink-lab .ink-run{flex-wrap:wrap;row-gap:.3rem}
+  #ink-lab .ink-run-value{margin-left:auto}
+  #ink-lab .ink-run-bar{order:3;flex:1 0 100%}
+}
+@media (max-width:800px){
+  #ink-lab .ink-learning-loop{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px}
+  #ink-lab .ink-learning-loop li{text-align:center;line-height:1.25;overflow-wrap:anywhere;hyphens:auto}
+  #ink-lab .ink-learning-loop span{display:none}
+}

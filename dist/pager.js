@@ -3,7 +3,7 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
-import { t } from './i18n.js?v=20261123-perf';
+import { t } from './i18n.js?v=20261123-ink';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -103,8 +103,11 @@ export function initPager() {
   const links = [...nav.querySelectorAll('.pager-index a')];
   let current = -1;
 
+  // A page being turned to; kept briefly so a layout change mid-move can re-aim.
+  let heading = null, headingTimer = 0;
   function go(index) {
     const target = pages[Math.max(0, Math.min(pages.length - 1, index))];
+    heading = target; clearTimeout(headingTimer); headingTimer = setTimeout(() => { heading = null; }, 1500);
     target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
@@ -156,8 +159,24 @@ export function initPager() {
     }
   }
 
+  // Experiments build themselves as the reader approaches, which can change the
+  // height of pages above the one being read. Keep the page being read still.
+  let anchor = null;
+  const remember = () => { const page = pages[measure()]; anchor = { page, top: page.getBoundingClientRect().top, y: window.scrollY }; };
+  if (typeof ResizeObserver !== 'undefined') {
+    const keepPlace = new ResizeObserver(() => {
+      if (heading) { heading.scrollIntoView({ behavior: 'auto', block: 'start' }); remember(); return; }
+      if (!anchor) return;
+      // The window moved since the place was noted (a jump or a scroll): note it again instead.
+      if (Math.abs(window.scrollY - anchor.y) > 1) { remember(); return; }
+      const shift = anchor.page.getBoundingClientRect().top - anchor.top;
+      if (Math.abs(shift) > 1) { window.scrollBy({ top: shift, behavior: 'instant' }); anchor.y = window.scrollY; }
+    });
+    pages.forEach(page => keepPlace.observe(page));
+  }
+
   let pending = false;
-  const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; update(); }); } };
+  const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; remember(); update(); }); } };
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
 
@@ -212,5 +231,20 @@ export function initPager() {
   });
 
   // First measurement waits for layout to settle instead of forcing it during start-up.
-  requestAnimationFrame(update);
+  // A changed link (#chapter) aims at its page the same way as a link on load.
+  window.addEventListener('hashchange', () => {
+    const target = document.getElementById(window.location.hash.slice(1));
+    const page = target && (target.matches('.page') ? target : target.querySelector('.page') || target.closest('.page'));
+    if (page) go(pages.indexOf(page));
+  });
+
+  // A link to a page: the browser jumps before scripts and translation finish
+  // laying out the pages above it, so aim at it again while the layout settles.
+  const linked = window.location.hash && document.getElementById(window.location.hash.slice(1));
+  const linkedPage = linked && (linked.matches('.page') ? linked : linked.querySelector('.page') || linked.closest('.page'));
+  if (linkedPage) {
+    heading = linkedPage; clearTimeout(headingTimer); headingTimer = setTimeout(() => { heading = null; }, 2500);
+    linkedPage.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
+  requestAnimationFrame(() => { if (linkedPage) linkedPage.scrollIntoView({ behavior: 'auto', block: 'start' }); remember(); update(); });
 }

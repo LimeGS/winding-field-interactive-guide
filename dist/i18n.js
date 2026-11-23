@@ -25,7 +25,7 @@ const collecting = lang === 'collect';
 const seen = collecting ? (window.__i18nKeys = new Set()) : null;
 let dictionary = {};
 if (lang !== 'en' && !collecting) {
-  try { dictionary = (await import(`./i18n/${lang}.js?v=20261123-perf`)).default; }
+  try { dictionary = (await import(`./i18n/${lang}.js?v=20261123-ink`)).default; }
   catch (error) { console.warn('Translation file could not be loaded; showing English.', error); }
 }
 const active = lang !== 'en' && !collecting;

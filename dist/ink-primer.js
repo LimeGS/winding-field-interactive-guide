@@ -1,4 +1,5 @@
-import {makeFragment} from './ink-model.js?v=20261123-perf';
+import {makeFragment} from './ink-model.js?v=20261123-ink';
+import {t} from './i18n.js?v=20261123-ink';
 
 const lessons = [
   ['01 / THE INPUT','Keep the depth. Follow the surface.',
@@ -46,7 +47,21 @@ export function initInkPrimer() {
   let step=0,depth=8,mask=false,training=true,cutoff=.3,oldWidth=0;
   const $=s=>root.querySelector(s);
   function text(value,x,y,size=13,color='#bac6b6') {const r=canvas.getBoundingClientRect().width,m=ctx.getTransform(),k=Math.hypot(m.a,m.b)*(r/canvas.width);if(k>0&&size*k<12)size=12/k;ctx.fillStyle=color;ctx.font=`${size}px system-ui,sans-serif`;ctx.fillText(value,x,y);}
-  function box(x,y,w,h,label,color='#d3f87a') {ctx.fillStyle='#172218';ctx.strokeStyle=color;ctx.lineWidth=1;ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);text(label,x+10,y+h/2+5,13,color);}
+  // Box labels are translated first, then wrapped (and shrunk only if needed) to stay inside the box.
+  function box(x,y,w,h,label,color='#d3f87a') {
+    ctx.fillStyle='#172218';ctx.strokeStyle=color;ctx.lineWidth=1;ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);
+    const r=canvas.getBoundingClientRect().width,m=ctx.getTransform(),k=Math.hypot(m.a,m.b)*(r/canvas.width);
+    let size=k>0&&13*k<12?12/k:13,lines=[];const words=t(label).split(/\s+/),room=w-16;
+    for(let tries=0;tries<6;tries++){
+      ctx.font=`${size}px system-ui,sans-serif`;lines=[];let line='';
+      for(const word of words){const next=line?`${line} ${word}`:word;if(line&&ctx.measureText(next).width>room){lines.push(line);line=word;}else line=next;}
+      if(line)lines.push(line);
+      if(Math.max(...lines.map(l=>ctx.measureText(l).width))<=room&&lines.length*size*1.25<=h-8)break;
+      size*=.9;
+    }
+    const lead=size*1.25,top=y+h/2-(lines.length*lead)/2+size*.9;
+    ctx.fillStyle=color;lines.forEach((l,i)=>ctx.fillText(l,x+8,top+i*lead));
+  }
   function arrow(x1,y1,x2,y2,color='#d3f87a') {ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();const a=Math.atan2(y2-y1,x2-x1);ctx.beginPath();ctx.moveTo(x2-7*Math.cos(a-.5),y2-7*Math.sin(a-.5));ctx.lineTo(x2,y2);ctx.lineTo(x2-7*Math.cos(a+.5),y2-7*Math.sin(a+.5));ctx.stroke();}
   function image(view,x,y,w,h,d=depth) {sx.putImageData(new ImageData(primerPixels(fragment,{view,depth:d,cutoff}),fragment.w,fragment.h),0,0);ctx.drawImage(scratch,x,y,w,h);}
   function draw() {

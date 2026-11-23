@@ -1,6 +1,6 @@
 // The cover's illustrative rolled sheet. Shared by the main page and the
 // background worker that draws it, so the animation never blocks the page.
-import { windingColor } from './winding-colors.js?v=20261123-perf';
+import { windingColor } from './winding-colors.js?v=20261123-ink';
 
 const tau = Math.PI * 2;
 const clamp = (x, a, b) => Math.min(b, Math.max(a, x));

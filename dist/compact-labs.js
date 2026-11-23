@@ -35,7 +35,7 @@ export function compactInk() {
   switcher.querySelectorAll('button').forEach((b,i)=>b.onclick=()=>{left.hidden=i===1;right.hidden=i===0;fitPaint();switcher.querySelectorAll('button').forEach((a,j)=>a.setAttribute('aria-pressed',String(i===j)));});
   const help=p0.querySelector('#ink-paint-help');help.textContent='Paint strokes as Ink; mark clean papyrus as Background. Unpainted pixels are ignored. Arrow keys + Space also paint.';maskControls.prepend(help);
   p0.querySelector(':scope > p').hidden=true;
-  const p1=root.querySelector('[data-panel="1"]'),trainSide=document.createElement('div');trainSide.className='ink-console';trainSide.append(p1.querySelector('.ink-lab-actions'),p1.querySelector('.ink-training-metrics'),p1.querySelector('.ink-loss-chart'),p1.querySelector('.ink-training-progress'));
+  const p1=root.querySelector('[data-panel="1"]'),trainSide=document.createElement('div');trainSide.className='ink-console';trainSide.append(p1.querySelector('.ink-lab-actions'),p1.querySelector('.ink-training-metrics'),p1.querySelector('.ink-loss-chart'));
   p1.append(trainSide);p1.querySelector('.ink-caption').hidden=true;
   const p2=root.querySelector('[data-panel="2"]'),testSide=document.createElement('div');testSide.className='ink-console';testSide.append(p2.querySelector('.ink-lab-actions'),p2.querySelector('.ink-result-note'),p2.querySelector('.ink-lab-actions'));p2.append(testSide);
   // On narrow screens, one visual at a time keeps the controls in the same viewport.
