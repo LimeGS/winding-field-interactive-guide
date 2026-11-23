@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0c100f">
-  <script>(function(){try{var q=new URLSearchParams(location.search).get('lang')||localStorage.getItem('wf-lang');if(q==='es'||q==='fr'){var d=document.documentElement;d.lang=q;d.classList.add('i18n-wait');var l=document.createElement('link');l.rel='modulepreload';l.href='./i18n/'+q+'.js?v=20261123-ink';document.head.appendChild(l);setTimeout(function(){d.classList.remove('i18n-wait')},4000);}}catch(e){}})();</script>
+  <script>(function(){try{var q=new URLSearchParams(location.search).get('lang')||localStorage.getItem('wf-lang');if(q==='es'||q==='fr'){var d=document.documentElement;d.lang=q;d.classList.add('i18n-wait');var l=document.createElement('link');l.rel='modulepreload';l.href='./i18n/'+q+'.js?v=20261123-repl';document.head.appendChild(l);setTimeout(function(){d.classList.remove('i18n-wait')},4000);}}catch(e){}})();</script>
   <style>.i18n-wait body{visibility:hidden}</style>
   <title>Winding Field — How to read a scroll you cannot open</title>
   <meta name="description" content="How do you read a scroll you cannot open? An interactive guide to virtually unrolling the Herculaneum scrolls: real CT data, a solver you can run in your browser, and ink detection.">
@@ -18,15 +18,15 @@
   <meta name="twitter:image" content="https://limegs.github.io/winding-field-interactive-guide/assets/social-card.jpg">
   <link rel="canonical" href="https://limegs.github.io/winding-field-interactive-guide/">
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-  <link rel="stylesheet" href="./site.css?v=20261123-ink">
-  <script type="module" src="./main.js?v=20261123-ink"></script>
-  <link rel="modulepreload" href="./i18n.js?v=20261123-ink">
-  <link rel="modulepreload" href="./pager.js?v=20261123-ink">
-  <link rel="modulepreload" href="./winding-colors.js?v=20261123-ink">
-  <link rel="modulepreload" href="./cold-open.js?v=20261123-ink">
-  <link rel="modulepreload" href="./cli-lab.js?v=20261123-ink">
-  <link rel="modulepreload" href="./sdk-workbench.js?v=20261123-ink">
-  <link rel="modulepreload" href="./hero-render.js?v=20261123-ink">
+  <link rel="stylesheet" href="./site.css?v=20261123-repl">
+  <script type="module" src="./main.js?v=20261123-repl"></script>
+  <link rel="modulepreload" href="./i18n.js?v=20261123-repl">
+  <link rel="modulepreload" href="./pager.js?v=20261123-repl">
+  <link rel="modulepreload" href="./winding-colors.js?v=20261123-repl">
+  <link rel="modulepreload" href="./cold-open.js?v=20261123-repl">
+  <link rel="modulepreload" href="./cli-lab.js?v=20261123-repl">
+  <link rel="modulepreload" href="./sdk-workbench.js?v=20261123-repl">
+  <link rel="modulepreload" href="./hero-render.js?v=20261123-repl">
 </head>
 
 <body>
@@ -255,8 +255,8 @@
       <button class="cli-tab" id="sdk-tab-setup" role="tab" aria-controls="sdk-panel" aria-selected="false" tabindex="-1" data-sdk-tab="setup">Install &amp; check</button>
     </div>
     <div class="cli-grid" id="sdk-panel" role="tabpanel" aria-labelledby="sdk-tab-mesh">
-      <div><h3 class="cli-heading" id="sdk-heading">Compare ink models on your scroll.</h3><p class="cli-description" id="sdk-description">Use the same region to compare every compatible profile and depth window. Review the comparison gallery to find which model fits the evidence.</p><div class="cli-fields" id="sdk-fields"><label class="cli-field cli-field-wide">Action<select id="sdk-action" aria-label="Ink comparison action"><option value="plan">Plan comparison</option><option value="run">Run comparison</option></select></label></div><div class="cli-facts" id="sdk-facts"></div></div>
-      <div><div class="cli-console terminal"><div class="cli-bar"><span class="cli-dot"></span><span class="cli-dot"></span><span class="cli-dot"></span><span>~/ink-sdk</span><span class="cli-label">Command builder</span></div><pre class="cli-command" tabindex="0" aria-label="Ink-sdk commands"><code id="sdk-command"></code></pre><div class="cli-actions"><a class="cli-btn cli-btn-primary" href="https://github.com/LimeGS/ink-sdk#readme" target="_blank" rel="noopener noreferrer">See full instructions on GitHub <span aria-hidden="true">↗</span></a></div></div></div>
+      <div><h3 class="cli-heading" id="sdk-heading">Compare ink models on your scroll.</h3><p class="cli-description" id="sdk-description">Use the same region to compare every compatible profile and depth window. Review the comparison gallery to find which model fits the evidence.</p><div class="cli-fields" id="sdk-fields"><label class="cli-field cli-field-wide">Action<select id="sdk-action" aria-label="Ink comparison action"><option value="plan">Plan comparison</option><option value="run">Run comparison</option></select></label></div><div class="cli-configs" id="sdk-files"><div><a href="./examples/sparse-ct.py" download="sparse-ct.py">CT chunk script ↓</a></div></div><div class="cli-facts" id="sdk-facts"></div></div>
+      <div><div class="cli-console terminal"><div class="cli-bar"><span class="cli-dot"></span><span class="cli-dot"></span><span class="cli-dot"></span><span>~/paris4</span><span class="cli-label">Command builder</span></div><pre class="cli-command" tabindex="0" aria-label="Ink-sdk commands"><code id="sdk-command"></code></pre><div class="cli-actions"><a class="cli-btn cli-btn-primary" href="https://github.com/LimeGS/ink-sdk#readme" target="_blank" rel="noopener noreferrer">See full instructions on GitHub <span aria-hidden="true">↗</span></a></div></div></div>
     </div>
   </div>
 </div>

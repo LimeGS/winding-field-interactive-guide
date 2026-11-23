@@ -34,7 +34,7 @@ export function initCliLab() {
       </div>
       <div>
         <div class="cli-console terminal">
-          <div class="cli-bar"><span class="cli-dot"></span><span class="cli-dot"></span><span class="cli-dot"></span><span>~/winding-field-cli</span><span class="cli-label">Command builder</span></div>
+          <div class="cli-bar"><span class="cli-dot"></span><span class="cli-dot"></span><span class="cli-dot"></span><span>~/paris4</span><span class="cli-label">Command builder</span></div>
           <pre class="cli-command" tabindex="0" aria-label="Generated CLI commands"><code id="cli-command"></code></pre>
           <div class="cli-actions">
             <a class="cli-btn cli-btn-primary" id="cli-instructions" href="${CLI_BASE}/README.md" target="_blank" rel="noopener noreferrer">See full instructions on GitHub <span aria-hidden="true">&nbsp;↗</span></a>

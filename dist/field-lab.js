@@ -1,4 +1,4 @@
-import { windingColor } from './winding-colors.js?v=20261123-ink';
+import { windingColor } from './winding-colors.js?v=20261123-repl';
 
 /**
  * Synthetic local-coordinate lesson. This is an analytic teaching model, not

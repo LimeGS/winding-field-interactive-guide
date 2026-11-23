@@ -3,7 +3,7 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
-import { t } from './i18n.js?v=20261123-ink';
+import { t } from './i18n.js?v=20261123-repl';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
