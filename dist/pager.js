@@ -3,7 +3,7 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
-import { t } from './i18n.js?v=20261123-bottom';
+import { t } from './i18n.js?v=20261123-perf';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -88,7 +88,7 @@ export function initPager() {
   nav.setAttribute('aria-label', 'Guide navigation');
   nav.innerHTML = `
     <div class="pager-progress" aria-hidden="true"><i></i></div>
-    <button type="button" class="pager-btn pager-back"><span aria-hidden="true">←</span><span class="pager-btn-label">Back</span></button>
+    <button type="button" class="pager-btn pager-back" disabled><span aria-hidden="true">←</span><span class="pager-btn-label">Back</span></button>
     <ol class="pager-index">${chapters.map((chapter, i) => `<li><a href="#${pages[chapter.pages[0]].id}" data-chapter-index="${i}"><span class="pager-label">${chapter.num ? `<span class="pager-num">${chapter.num}</span>` : ''}<span class="pager-name">${chapter.name}</span></span><span class="pager-dots" aria-hidden="true">${chapter.pages.map(() => '<i></i>').join('')}</span></a></li>`).join('')}</ol>
     <button type="button" class="pager-here" aria-haspopup="dialog"></button>
     <button type="button" class="pager-btn pager-next"><span class="pager-next-text"><span class="pager-btn-label">Next</span><span class="pager-next-title"></span></span><span class="pager-next-icon" aria-hidden="true">→</span></button>
@@ -129,11 +129,13 @@ export function initPager() {
 
     back.disabled = index === 0;
     next.classList.toggle('pager-restart', last);
-    next.querySelector('.pager-btn-label').textContent = last ? 'Start over' : index === 0 ? 'Start reading' : 'Next';
+    const nextLabel = last ? 'Start over' : index === 0 ? 'Start reading' : 'Next';
+    next.querySelector('.pager-btn-label').textContent = nextLabel;
     next.querySelector('.pager-next-title').textContent = last ? '' : pages[index + 1].dataset.title || '';
     next.querySelector('.pager-next-icon').textContent = last ? '↺' : '→';
-    next.setAttribute('aria-label', last ? t('Start over from the cover') : `${t('Next page')}: ${t(pages[index + 1].dataset.title)}`);
-    back.setAttribute('aria-label', index === 0 ? t('Previous page') : `${t('Previous page')}: ${t(pages[index - 1].dataset.title)}`);
+    // Accessible names start with the visible words, so voice control matches them.
+    next.setAttribute('aria-label', last ? t('Start over') : `${t(nextLabel)}: ${t(pages[index + 1].dataset.title)}`);
+    back.setAttribute('aria-label', index === 0 ? t('Back') : `${t('Back')}: ${t(pages[index - 1].dataset.title)}`);
 
     links.forEach((link, i) => {
       const active = i === chapterIndex;
@@ -143,10 +145,10 @@ export function initPager() {
         dot.className = i < chapterIndex || (active && k < within) ? 'done' : active && k === within ? 'now' : '';
       });
     });
-    bar.style.width = `${((index + 1) / pages.length) * 100}%`;
+    bar.style.transform = `scaleX(${(index + 1) / pages.length})`;
     const label = `${chapter.num ? `${chapter.num} ` : ''}${chapter.name}`;
-    here.innerHTML = `<span class="pager-here-chapter">${label}</span><span class="pager-here-count">${index + 1} / ${pages.length}</span>`;
-    here.setAttribute('aria-label', `${t('Contents')}. ${t('Page')} ${index + 1} / ${pages.length}: ${t(page.dataset.title)}`);
+    here.innerHTML = `<span class="pager-here-chapter">${label}</span> <span class="pager-here-count">${index + 1} / ${pages.length}</span>`;
+    here.setAttribute('aria-label', `${chapter.num ? `${chapter.num} ` : ''}${t(chapter.name)} ${index + 1} / ${pages.length}. ${t('Contents')}: ${t(page.dataset.title)}`);
     status.textContent = `${t('Page')} ${index + 1} / ${pages.length}. ${t(chapter.name)}: ${t(page.dataset.title)}`;
     document.documentElement.dataset.page = page.id;
     if (window.location.hash !== `#${page.id}` && (index > 0 || window.location.hash)) {
@@ -209,5 +211,6 @@ export function initPager() {
     go(event.key === 'ArrowRight' ? current + 1 : current - 1);
   });
 
-  update();
+  // First measurement waits for layout to settle instead of forcing it during start-up.
+  requestAnimationFrame(update);
 }

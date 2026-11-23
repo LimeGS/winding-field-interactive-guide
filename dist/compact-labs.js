@@ -1,4 +1,4 @@
-export function initCompactLabs() {
+export function compactField() {
   const field=document.getElementById('field');
   // Extra background for the field toy, shown in its "Under the hood" panel.
   const original=document.createElement('div');original.innerHTML='<p>Imagine contour lines on a map. Within a local patch, the coordinate changes as you cross papyrus layers, and stays nearly constant as you follow a surface. Neighbouring layers can be turns of the same rolled strip.</p><p>That is the central idea of a <strong>winding field</strong>: a scalar value at each supported point in a local volume. The goal is a useful geometric coordinate, not a page number.</p>';
@@ -17,13 +17,17 @@ export function initCompactLabs() {
   fieldDetailBody.append(original, ...[...fieldDetails.children].slice(1));
   fieldDetails.append(fieldDetailBody);
   f.after(fieldDetails);
+}
+
+export function compactInk() {
   const root=document.getElementById('ink-lab');
   const p0=root.querySelector('[data-panel="0"]'),grid=p0.querySelector('.ink-lab-grid'),left=grid.children[0],right=grid.children[1];
   const brushTools=left.querySelectorAll('.ink-tools');
   const maskControls=document.createElement('div');maskControls.className='ink-console';maskControls.innerHTML='<div class="console-label">INTERACT · LABEL THE EVIDENCE</div>';
   maskControls.append(brushTools[0],left.querySelector('.ink-label-control'),left.querySelector('.ink-mask-counts'),brushTools[1],p0.querySelector('.ink-lab-actions'));
   const paint=left.querySelector('canvas');
-  function fitPaint(){const available=left.clientHeight-(left.querySelector('h4').getBoundingClientRect().height+4);if(available>0){const width=Math.min(left.clientWidth,available*1.5);paint.style.width=width+'px';paint.style.height=width/1.5+'px';}}
+  // The canvas is collapsed while measuring, so its own size cannot feed back into the result.
+  function fitPaint(){if(left.hidden)return;const before=[paint.style.width,paint.style.height];paint.style.width='0px';paint.style.height='0px';const available=left.clientHeight-(left.querySelector('h4').getBoundingClientRect().height+4);if(available<=0){[paint.style.width,paint.style.height]=before;}else{const width=Math.min(left.clientWidth,available*1.5);paint.style.width=width+'px';paint.style.height=width/1.5+'px';}}
   new ResizeObserver(fitPaint).observe(left);
   brushTools[1].classList.add('mask-secondary-tools');brushTools[0].append(maskControls.querySelector('#ink-clear'));
   const switcher=document.createElement('div');switcher.className='ink-tools ink-view-switch';switcher.innerHTML='<button class="ink-tool" aria-pressed="true">Reference / paint</button><button class="ink-tool" aria-pressed="false">CT stack</button>';

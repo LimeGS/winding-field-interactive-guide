@@ -1,14 +1,10 @@
-import { startI18n } from './i18n.js?v=20261123-bottom';
-import { initInkPrimer } from './ink-primer.js?v=20261123-bottom';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-bottom';
-import { initCompactLabs } from './compact-labs.js?v=20261123-bottom';
-import { initInkLab } from './ink-lab.js?v=20261123-bottom';
-import { initFieldLab } from './field-lab.js?v=20261123-bottom';
-import { initCliLab } from './cli-lab.js?v=20261123-bottom';
-import { initCluesLab } from './clues-lab.js?v=20261123-bottom';
-import { initColdOpen } from './cold-open.js?v=20261123-bottom';
-import { initPager } from './pager.js?v=20261123-bottom';
-import { windingColor, windingGradient } from './winding-colors.js';
+import { startI18n } from './i18n.js?v=20261123-perf';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-perf';
+import { initCliLab } from './cli-lab.js?v=20261123-perf';
+import { initColdOpen } from './cold-open.js?v=20261123-perf';
+import { initPager } from './pager.js?v=20261123-perf';
+import { windingColor, windingGradient } from './winding-colors.js?v=20261123-perf';
+import * as heroScene from './hero-render.js?v=20261123-perf';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -17,6 +13,21 @@ const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
 const lerp = (a, b, t) => a + (b - a) * t;
 const tau = Math.PI * 2;
 initPager();
+
+// Experiments are built when their page comes within about a screen of view,
+// so the cover does not pay for work the reader has not reached yet.
+const nearMargin = '120% 0px';
+function whenNear(element, start) {
+  if (!element) return;
+  if (typeof IntersectionObserver === 'undefined') { start(); return; }
+  const observer = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    observer.disconnect();
+    start();
+  }, { rootMargin: nearMargin });
+  observer.observe(element);
+}
+
 
 
 // Draw in CSS pixels; root-font units keep diagram text in step with the page.
@@ -43,7 +54,7 @@ function responsiveCanvas(canvas, draw) {
     resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;resize();});
   }
   function densityChanged() {watchDensity();scheduleResize();}
-  function resize() {
+  let resize=function() {
     if(destroyed||!ctx)return;
     watchDensity();
     const rect = canvas.getBoundingClientRect();
@@ -54,13 +65,17 @@ function responsiveCanvas(canvas, draw) {
     canvas.width = Math.max(1,Math.round(rect.width*dpr)); canvas.height = Math.max(1,Math.round(rect.height*dpr));
     ctx.setTransform(canvas.width/rect.width,0,0,canvas.height/rect.height,0,0);
     draw(ctx,sizing.w,sizing.h,sizing.rem);
-  }
+  };
   const observer = typeof ResizeObserver==='undefined'?null:new ResizeObserver(scheduleResize);
   if(observer)observer.observe(canvas);
   window.addEventListener('resize',scheduleResize,{passive:true});
-  resize();
+  // Nothing is drawn until the canvas is close to the screen.
+  let near=false;
+  whenNear(canvas,()=>{near=true;resize();});
+  const guardedResize=resize;
+  resize=()=>{if(near)guardedResize();};
   return {
-    draw:()=>{if(!destroyed&&ctx)draw(ctx,sizing.w,sizing.h,sizing.rem);}, sizing, resize,
+    draw:()=>{if(near&&!destroyed&&ctx)draw(ctx,sizing.w,sizing.h,sizing.rem);}, sizing, resize,
     destroy:()=>{
       destroyed=true;if(observer)observer.disconnect();
       window.removeEventListener('resize',scheduleResize);removeDensityListener();
@@ -86,62 +101,31 @@ function grid(ctx,w,h,spacing=35) {
 // An illustrative rolled sheet. Its style switches are not CT measurements.
 let heroMode = 'layers', rotation = -.36;
 const heroCanvas = $('#hero-canvas');
-function heroProject(x,y,z,w,h) {
-  const cy=Math.cos(rotation),sy=Math.sin(rotation);
-  let xx=x*cy+z*sy,zz=-x*sy+z*cy;
-  const pitch=.68, cp=Math.cos(pitch),sp=Math.sin(pitch);
-  let yy=y*cp-zz*sp; zz=y*sp+zz*cp;
-  const roll=-.40,cr=Math.cos(roll),sr=Math.sin(roll);
-  const rx=xx*cr-yy*sr, ry=xx*sr+yy*cr;
-  const s=Math.min(w/440,h/425)*.91*850/(850+zz);
-  return [w*.51+rx*s,h*.48+ry*s,zz];
+// Drawing happens in a background worker where the browser allows it, so the
+// rotating cover never blocks scrolling or typing. Older browsers draw here.
+function heroRenderer(canvas){
+  if('transferControlToOffscreen' in canvas&&typeof Worker!=='undefined'){
+    try{
+      const worker=new Worker(new URL('./hero-worker.js?v=20261123-perf',import.meta.url),{type:'module'});
+      const offscreen=canvas.transferControlToOffscreen();
+      worker.postMessage({type:'init',canvas:offscreen},[offscreen]);
+      let size=null;
+      const draw=()=>{if(size)worker.postMessage({type:'draw',rotation,mode:heroMode});};
+      const measure=()=>{
+        const rect=canvas.getBoundingClientRect();if(rect.width<=0||rect.height<=0)return;
+        size={w:rect.width,h:rect.height,dpr:Math.min(window.devicePixelRatio||1,3)};
+        worker.postMessage({type:'size',...size});draw();
+      };
+      if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>requestAnimationFrame(measure)).observe(canvas);
+      window.addEventListener('resize',()=>requestAnimationFrame(measure),{passive:true});
+      requestAnimationFrame(measure);
+      return {draw};
+    }catch(error){console.warn('Drawing the cover on the page instead of a worker.',error);}
+  }
+  const { drawHeroScene } = heroScene;
+  return responsiveCanvas(canvas,(ctx,w,h)=>drawHeroScene(ctx,w,h,rotation,heroMode));
 }
-function scrollPoint(t,v) {
-  const r=15+3.05*t;
-  const ripple=1+.045*Math.sin(t*3+v*3)+.022*Math.sin(t*7-v*8);
-  return [r*Math.cos(t)*ripple, v*167+Math.sin(t*1.9)*6*(v*v),r*Math.sin(t)*.86*ripple];
-}
-function drawHero(ctx,w,h) {
-  if(w<2||h<2)return;
-  ctx.clearRect(0,0,w,h); grid(ctx,w,h,36);
-  const lines=[];
-  for(let k=0;k<620;k++){
-    const t=.1+k/619*14*Math.PI;
-    const mid=scrollPoint(t,0),pm=heroProject(...mid,w,h);
-    lines.push({t,depth:pm[2]});
-  }
-  lines.sort((a,b)=>b.depth-a.depth);
-  for(const {t,depth} of lines){
-    const light=clamp(32-depth*.075,18,53);
-    if(heroMode==='surface')ctx.strokeStyle=`hsla(${42+Math.sin(t*.4)*12},${38+Math.cos(t)*10}%,${light}%,.68)`;
-    if(heroMode==='wireframe')ctx.strokeStyle=`hsla(100,8%,${light+12}%,.48)`;
-    // This is illustrative position along the roll, not a fitted W field.
-    if(heroMode==='layers')ctx.strokeStyle=windingColor((t-.1)/(14*Math.PI)*6,.82,clamp(.84-depth*.0028,.42,1.1));
-    ctx.lineWidth=heroMode==='wireframe'?.65:.85;
-    ctx.beginPath();
-    for(let j=0;j<=16;j++){
-      const v=-1+j/8;
-      const p=heroProject(...scrollPoint(t,v),w,h);
-      if(!j)ctx.moveTo(p[0],p[1]);else ctx.lineTo(p[0],p[1]);
-    }
-    ctx.stroke();
-  }
-  // Rims make the single spiralling sheet legible without claiming global W values.
-  for(const v of [-1,1]){
-    for(let k=0;k<600;k++){
-      const t=.1+k/600*14*Math.PI;
-      const p=heroProject(...scrollPoint(t,v),w,h),q=heroProject(...scrollPoint(t+14*Math.PI/600,v),w,h);
-      const lum=clamp(53-p[2]*.08,30,75);
-      ctx.strokeStyle=heroMode==='wireframe'?`hsla(90,12%,${lum}%,.9)`:heroMode==='layers'?windingColor((t-.1)/(14*Math.PI)*6,.95,clamp(1.05-p[2]*.0014,.7,1.25)):`hsla(65,43%,${lum}%,.9)`;
-      ctx.lineWidth=1.15;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();
-    }
-  }
-  if(heroMode==='wireframe'){
-    ctx.save();ctx.globalAlpha=.32;ctx.strokeStyle='#cee0c1';ctx.setLineDash([3,5]);
-    ctx.beginPath();ctx.ellipse(w*.5,h*.48,w*.29,h*.13,-.38,0,tau);ctx.stroke();ctx.restore();
-  }
-}
-const hero = responsiveCanvas(heroCanvas,drawHero);
+const hero = heroRenderer(heroCanvas);
 $$('[data-hero-mode]').forEach(b=>b.addEventListener('click',()=>{
   heroMode=b.dataset.heroMode;
   $$('[data-hero-mode]').forEach(el=>{const active=el===b;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
@@ -200,16 +184,15 @@ function pipelineSVG(mode){
 }
 $$('[data-pipe-graphic]').forEach(el=>{el.innerHTML=pipelineSVG(el.dataset.pipeGraphic);});
 
-initCluesLab();
+whenNear(document.getElementById('clues-lab'),()=>import('./clues-lab.js?v=20261123-perf').then(m=>m.initCluesLab()));
 initColdOpen();
-initFieldLab();
+whenNear(document.getElementById('field-lab'),()=>Promise.all([import('./field-lab.js?v=20261123-perf'),import('./compact-labs.js?v=20261123-perf')]).then(([field,compact])=>{field.initFieldLab();compact.compactField();}));
 initCliLab();
 // The "five knobs" notebook link sits in the command builder's form column.
 {const knobs=document.querySelector('#p-code-2 .page-body > details.deep-dive'),configs=document.querySelector('#cli-lab .cli-configs');if(knobs&&configs)configs.after(knobs);}
 initSdkWorkbench();
-initInkLab();
-initCompactLabs();
-initInkPrimer();
+whenNear(document.getElementById('ink-lab'),()=>Promise.all([import('./ink-lab.js?v=20261123-perf'),import('./compact-labs.js?v=20261123-perf')]).then(([ink,compact])=>{ink.initInkLab();compact.compactInk();}));
+whenNear(document.getElementById('ink-primer'),()=>import('./ink-primer.js?v=20261123-perf').then(m=>m.initInkPrimer()));
 
 // Real numerical computation on a tiny synthetic graph. The full Python core is not loaded.
 const NX=12,NY=6,N=NX*NY;

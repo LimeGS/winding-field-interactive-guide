@@ -1,4 +1,4 @@
-import {makeFragment} from './ink-model.js';
+import {makeFragment} from './ink-model.js?v=20261123-perf';
 
 const lessons = [
   ['01 / THE INPUT','Keep the depth. Follow the surface.',

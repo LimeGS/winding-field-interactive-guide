@@ -58,8 +58,9 @@ Then open http://localhost:8080. Any static host works: publish the contents of
 
 | Path | Contents |
 |---|---|
-| `dist/` | The site: `index.html`, CSS, ES modules, `examples/` configs |
-| `dist/assets/real/` | Real PHerc. Paris 4 images (see credits) |
+| `dist/` | The site: `index.html`, `site.css`, ES modules, `examples/` configs |
+| `dist/hero-worker.js` | Draws the cover's rotating scroll off the main thread (falls back to the page) |
+| `dist/assets/real/` | Real PHerc. Paris 4 images (see credits), as WebP at several widths |
 | `tests/` | Checks for the command builders and toy models |
 | `docs/` | Design reviews, verification notes and screenshots |
 
