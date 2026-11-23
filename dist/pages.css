@@ -491,3 +491,8 @@ html:not([lang="en"]) .page .solver-controls .range-control{margin:.45rem 0}
   .page-cover .hero-view-controls button{padding-inline:.4rem;white-space:normal;line-height:1.2}
 }
 @media (max-width:60rem){.page-cover .hero-view-controls{align-self:center;margin-inline:auto}}
+
+/* A closing "more" panel sits on the bottom edge of its page, not right under the text. */
+.page-body:has(>details:last-child){align-self:stretch;display:flex;flex-direction:column}
+.page-body:has(>details:last-child)>:first-child{margin-top:auto!important}
+.page .page-body>details:last-child{margin-top:auto!important}
