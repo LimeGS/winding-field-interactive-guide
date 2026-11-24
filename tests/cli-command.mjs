@@ -3,7 +3,7 @@ import {spawnSync} from 'node:child_process';
 import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {cliCommand,CLI_IMAGE,CLI_REVISION} from '../dist/cli-lab.js';
+import {cliCommand,CLI_IMAGE,CLI_VERSION} from '../dist/cli-lab.js';
 import {runWithFakeDocker,splitRun} from './fake-docker.mjs';
 // Run the page's commands with a recording docker; never execute the research CLI or download CT.
 function commandsFor(options) {
@@ -11,12 +11,12 @@ function commandsFor(options) {
  return calls.map(call=>{
   const {options:o,args}=splitRun(call,CLI_IMAGE);
   // As the reader, in the folder they run from, with nothing else mounted.
-  assert.deepEqual(o,['--rm','--init','--user',`${process.getuid()}:${process.getgid()}`,'-v',`${cwd}:/outputs`]);
+  assert.deepEqual(o,['--rm','--init','--gpus','all','--user',`${process.getuid()}:${process.getgid()}`,'-v',`${cwd}:/outputs`]);
   return args;
  });
 }
-assert.match(CLI_REVISION,/^[0-9a-f]{40}$/,'pin the image to a full commit');
-assert.equal(CLI_IMAGE,`ghcr.io/limegs/winding-field-cli:sha-${CLI_REVISION.slice(0,7)}-cpu`);
+assert.match(CLI_VERSION,/^\d+\.\d+\.\d+$/,'pin the image to a stable release');
+assert.equal(CLI_IMAGE,`ghcr.io/limegs/winding-field-cli:${CLI_VERSION}`,'the default (GPU) image');
 const [mesh,flatten]=commandsFor();
 const value=(args,flag)=>args[args.indexOf(flag)+1];
 assert.deepEqual(mesh,['prepared','mesh','--config','paris4-remote.json','--output','runs/paris4-W-60']);

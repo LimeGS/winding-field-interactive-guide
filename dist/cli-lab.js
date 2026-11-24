@@ -1,11 +1,11 @@
-// The official CPU image, pinned to the build these commands were run with end to end.
-export const CLI_REVISION = 'PENDING_CLI_REVISION';
-export const CLI_IMAGE = `ghcr.io/limegs/winding-field-cli:sha-${CLI_REVISION.slice(0, 7)}-cpu`;
-const CLI_BASE = `https://github.com/LimeGS/winding-field-cli/blob/${CLI_REVISION}`;
+// The official release image: GPU (CUDA) by default; the same tag with -cpu runs without a GPU.
+export const CLI_VERSION = '1.6.7';
+export const CLI_IMAGE = `ghcr.io/limegs/winding-field-cli:${CLI_VERSION}`;
+const CLI_BASE = `https://github.com/LimeGS/winding-field-cli/blob/v${CLI_VERSION}`;
 const CT_VOLUMES = 's3://vesuvius-challenge-open-data/PHercParis4/volumes';
 const CT_SCAN = '20260411134726-2.400um-0.2m-78keV-masked.zarr/2';
-// One line per terminal: run the image as you, in this folder (Linux x86-64 or Docker Desktop).
-export const WF_FUNCTION = `wf() { docker run --rm --init --user "$(id -u):$(id -g)" -v "$PWD:/outputs" \\\n  ${CLI_IMAGE} "$@"; }`;
+// One line per terminal: run the image as you, in this folder, with the GPU.
+export const WF_FUNCTION = `wf() { docker run --rm --init --gpus all --user "$(id -u):$(id -g)" \\\n  -v "$PWD:/outputs" ${CLI_IMAGE} "$@"; }`;
 
 export function cliCommand({tab='field',action='flatten'}={}) {
   const define = `# Once per terminal: the official winding-field-cli image\n${WF_FUNCTION}\n\n`;
@@ -72,7 +72,7 @@ export function initCliLab() {
       $('#cli-heading').textContent = 'An existing field. A surface to unfold.';
       $('#cli-description').textContent = 'PHerc. Paris 4 (Scroll 1). Geometry and ink use one CT resolution throughout: 9.6 µm. Stream the published field, extract the W = −60 candidate surface, then flatten the mesh and sample the CT.';
       fields += selectMarkup('action', 'Action', [['flatten', 'Extract mesh & flatten'], ['mesh', 'Extract mesh only']], true);
-      facts.push('The field streams from Hugging Face; no field fitting or model inference.', 'One scale: 9.6 µm. The scan is a multiscale pyramid (2.4, 4.8, 9.6 µm…); the path ending in /2 is its 9.6 µm level, and --level 0 means use it as given. ink-sdk uses the same level.', 'The field’s 307.2 µm grid (32 × 9.6 µm) is a solver setting, not a second CT scale. It is coarse: mesh coordinates are in µm, but their detail is limited by that grid. LSCM flattens each connected surface component (--scope sheet; Linux).');
+      facts.push('The field streams from Hugging Face; no field fitting or model inference.', 'One scale: 9.6 µm. The scan is a multiscale pyramid (2.4, 4.8, 9.6 µm…); the path ending in /2 is its 9.6 µm level, and --level 0 means use it as given. ink-sdk uses the same level.', 'The field’s 307.2 µm grid (32 × 9.6 µm) is a solver setting, not a second CT scale. It is coarse: mesh coordinates are in µm, but their detail is limited by that grid. LSCM flattens each connected surface component (--scope sheet; Linux).', 'Measured with the CPU image on 4 cores: the mesh took under 2 minutes and the export 245 tiles in about 75 minutes, with 8 GB of tiles and CT cache. The CLI keeps 8 GiB of disk free, so leave about 20 GB. If the export stops, rerun it with --resume: it renders the tiles again and sets the old ones aside in a render-interrupted folder you can delete.');
     }
     $('#cli-fields').innerHTML = fields;
     $('#cli-fields').hidden = !fields;

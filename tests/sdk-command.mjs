@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {sdkCommand,SDK_IMAGE,SDK_REVISION,INK_FUNCTION} from '../dist/sdk-workbench.js';
+import {sdkCommand,SDK_IMAGE,SDK_VERSION,INK_FUNCTION} from '../dist/sdk-workbench.js';
 import {runWithFakeDocker,splitRun} from './fake-docker.mjs';
 
-assert.match(SDK_REVISION,/^[0-9a-f]{40}$/,'pin the image to a full commit');
-assert.equal(SDK_IMAGE,`ghcr.io/limegs/ink-sdk:sha-${SDK_REVISION.slice(0,7)}-cpu`);
+assert.match(SDK_VERSION,/^\d+\.\d+\.\d+$/,'pin the image to a stable release');
+assert.equal(SDK_IMAGE,`ghcr.io/limegs/ink-sdk:${SDK_VERSION}`,'the default (GPU) image');
 
 // Each tab after Install & check runs in the same terminal, so ink() is already defined.
 function inkCalls(command,prepare){
@@ -13,7 +13,7 @@ function inkCalls(command,prepare){
   return calls.map(call=>{
     const {options,args}=splitRun(call,SDK_IMAGE);
     // As the reader, in the folder they run from, with the weights in a named volume.
-    assert.deepEqual(options,['--rm','--user',`${process.getuid()}:${process.getgid()}`,'-v',`${cwd}:/work`,'-v','ink-sdk-models:/models']);
+    assert.deepEqual(options,['--rm','--gpus','all','--user',`${process.getuid()}:${process.getgid()}`,'-v',`${cwd}:/work`,'-v','ink-sdk-models:/models']);
     return args;
   });
 }
