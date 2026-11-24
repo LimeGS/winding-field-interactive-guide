@@ -1,13 +1,18 @@
-const CLI_REVISION = '59e1a105a2fd4016d8a8e508a862d58b13c22f50';
+// The official CPU image, pinned to the build these commands were run with end to end.
+export const CLI_REVISION = 'PENDING_CLI_REVISION';
+export const CLI_IMAGE = `ghcr.io/limegs/winding-field-cli:sha-${CLI_REVISION.slice(0, 7)}-cpu`;
 const CLI_BASE = `https://github.com/LimeGS/winding-field-cli/blob/${CLI_REVISION}`;
 const CT_VOLUMES = 's3://vesuvius-challenge-open-data/PHercParis4/volumes';
 const CT_SCAN = '20260411134726-2.400um-0.2m-78keV-masked.zarr/2';
+// One line per terminal: run the image as you, in this folder (Linux x86-64 or Docker Desktop).
+export const WF_FUNCTION = `wf() { docker run --rm --init --user "$(id -u):$(id -g)" -v "$PWD:/outputs" \\\n  ${CLI_IMAGE} "$@"; }`;
 
 export function cliCommand({tab='field',action='flatten'}={}) {
-  if(tab==='demo')return 'winding-field doctor\nwinding-field demo --output runs/demo\n\n# Open runs/demo/index.html after the demo finishes.';
-  const mesh = 'mkdir -p runs exports\n\nwinding-field prepared mesh --config paris4-remote.json \\\n  --output runs/paris4-W-60';
+  const define = `# Once per terminal: the official winding-field-cli image\n${WF_FUNCTION}\n\n`;
+  if(tab==='demo')return `${define}wf doctor\nwf demo --output runs/demo\n\n# Open runs/demo/index.html after the demo finishes.`;
+  const mesh = `${define}mkdir -p runs exports\n\nwf prepared mesh --config paris4-remote.json \\\n  --output runs/paris4-W-60`;
   if (action === 'mesh') return mesh;
-  return `${mesh}\n\nVOLUMES='${CT_VOLUMES}'\nCT="$VOLUMES/${CT_SCAN}"\n\nwinding-field export-sheets --mesh-bundle runs/paris4-W-60 \\\n  --flattening-solver lscm --scope sheet \\\n  --flattening-config paris4-flattening.json \\\n  --source "$CT" --voxel-um 9.6 --level 0 \\\n  --export-tifxyz --output exports/paris4-W-60`;
+  return `${mesh}\n\nVOLUMES='${CT_VOLUMES}'\nCT="$VOLUMES/${CT_SCAN}"\n\nwf export-sheets --mesh-bundle runs/paris4-W-60 \\\n  --flattening-solver lscm --scope sheet \\\n  --flattening-config paris4-flattening.json \\\n  --source "$CT" --voxel-um 9.6 --level 0 \\\n  --ct-workers 4 --raster-workers 4 \\\n  --export-tifxyz --output exports/paris4-W-60`;
 }
 
 /** A command builder. It executes no commands. */

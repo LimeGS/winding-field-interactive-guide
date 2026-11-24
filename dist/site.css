@@ -2019,5 +2019,4 @@ html{overflow-anchor:none}
 @media (min-width:75rem){
   .page #ink-sdk-guide .cli-grid>div:first-child>.cli-facts{grid-column:1;grid-row:auto;grid-template-columns:1fr;margin-top:1rem;gap:.6rem}
   .page #ink-sdk-guide .cli-grid>div:nth-child(2){grid-row:1 / span 6}
-  .page #ink-sdk-guide #sdk-files{margin-top:.75rem}
 }
