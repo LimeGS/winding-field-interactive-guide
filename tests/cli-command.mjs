@@ -16,6 +16,7 @@ function commandsFor(options) {
  });
 }
 assert.match(CLI_VERSION,/^\d+\.\d+\.\d+$/,'pin the image to a stable release');
+assert.equal(CLI_VERSION.split('.')[0],'2','commands follow the 2.x flags');
 assert.equal(CLI_IMAGE,`ghcr.io/limegs/winding-field-cli:${CLI_VERSION}`,'the default (GPU) image');
 const [mesh,flatten]=commandsFor();
 const value=(args,flag)=>args[args.indexOf(flag)+1];
@@ -29,7 +30,8 @@ assert.match(value(flatten,'--source'),/PHercParis4\/volumes\/20260411134726-2\.
 assert.match(value(flatten,'--source'),/\.zarr\/2$/);
 assert.equal(value(flatten,'--voxel-um'),'9.6');
 assert.equal(value(flatten,'--level'),'0');
-assert(flatten.includes('--export-tifxyz'));
+// 2.0 always writes TIFXYZ and rejects the removed 1.x flags.
+for(const flag of ['--export-tifxyz','--no-export-tifxyz'])assert(!flatten.includes(flag),flag);
 assert.equal(value(flatten,'--ct-workers'),'4');assert.equal(value(flatten,'--raster-workers'),'4');
 assert(!flatten.includes('--levels'),'mesh bundle already binds the raw levels');
 assert.deepEqual(commandsFor({action:'mesh'}),[mesh]);
