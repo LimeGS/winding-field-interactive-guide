@@ -1,4 +1,4 @@
-import {INK_WIDTH as W,INK_HEIGHT as H,makeFragment,paintMask,collectLabels,exampleMask,InkNetwork,random} from './ink-model.js?v=20261123-repl';
+import {INK_WIDTH as W,INK_HEIGHT as H,makeFragment,paintMask,collectLabels,exampleMask,InkNetwork,random} from './ink-model.js?v=20261125-steps';
 const minFont=(c,px)=>{const r=c.canvas.getBoundingClientRect().width,m=c.getTransform(),k=Math.hypot(m.a,m.b)*(r/c.canvas.width);return k>0&&px*k<12?Math.ceil(12/k):px;};
 
 export function initInkLab() {

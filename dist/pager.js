@@ -3,7 +3,7 @@
 // Extra material (notebooks, glossary terms, credits) opens in place as a
 // panel, so nothing ever sends the reader to another part of the guide.
 
-import { t } from './i18n.js?v=20261123-repl';
+import { t } from './i18n.js?v=20261125-steps';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -111,6 +111,33 @@ export function initPager() {
     target.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
   }
 
+  // A page can hold numbered steps (a tablist marked data-pager-steps). Next and Back
+  // walk those steps first and turn the page only after the last (or before the first).
+  const clean = node => node.textContent.replace(/\s+/g, ' ').trim();
+  function stepsOf(index) {
+    const list = pages[index] && pages[index].querySelector('[data-pager-steps]');
+    const tabs = list ? [...list.querySelectorAll('[role="tab"]')] : [];
+    if (tabs.length < 2) return null;
+    return { tabs, at: Math.max(0, tabs.findIndex(tab => tab.getAttribute('aria-selected') === 'true')) };
+  }
+  function advance(direction) {
+    const steps = stepsOf(current);
+    const to = steps ? steps.at + direction : -1;
+    if (steps && to >= 0 && to < steps.tabs.length) {
+      steps.tabs[to].click();
+      // On a tall page read further down, bring the steps back into view.
+      const list = steps.tabs[to].closest('[data-pager-steps]');
+      if (list.getBoundingClientRect().top < 0) list.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
+    const target = direction > 0 && current === pages.length - 1 ? 0 : current + direction;
+    if (target < 0 || target >= pages.length) return;
+    go(target);
+    // Arriving forwards starts at step 1; coming back lands on the last step.
+    const arriving = stepsOf(target);
+    if (arriving) arriving.tabs[direction > 0 ? 0 : arriving.tabs.length - 1].click();
+  }
+
   function measure() {
     const line = window.innerHeight * 0.4;
     let found = 0;
@@ -120,9 +147,9 @@ export function initPager() {
     return found;
   }
 
-  function update() {
+  function update(force = false) {
     const index = measure();
-    if (index === current) return;
+    if (index === current && !force) return;
     current = index;
     const page = pages[index];
     const chapterIndex = chapterOf(index);
@@ -130,15 +157,20 @@ export function initPager() {
     const within = chapter.pages.indexOf(index);
     const last = index === pages.length - 1;
 
-    back.disabled = index === 0;
-    next.classList.toggle('pager-restart', last);
-    const nextLabel = last ? 'Start over' : index === 0 ? 'Start reading' : 'Next';
+    const steps = stepsOf(index);
+    const nextStep = steps && steps.at < steps.tabs.length - 1 ? clean(steps.tabs[steps.at + 1]) : '';
+    const backStep = steps && steps.at > 0 ? clean(steps.tabs[steps.at - 1]) : '';
+    const restart = last && !nextStep;
+    back.disabled = index === 0 && !backStep;
+    next.classList.toggle('pager-restart', restart);
+    const nextLabel = restart ? 'Start over' : index === 0 && !nextStep ? 'Start reading' : 'Next';
     next.querySelector('.pager-btn-label').textContent = nextLabel;
-    next.querySelector('.pager-next-title').textContent = last ? '' : pages[index + 1].dataset.title || '';
-    next.querySelector('.pager-next-icon').textContent = last ? '↺' : '→';
+    // Step names come from the tabs, already in the page's language.
+    next.querySelector('.pager-next-title').textContent = nextStep || (restart ? '' : pages[index + 1].dataset.title || '');
+    next.querySelector('.pager-next-icon').textContent = restart ? '↺' : '→';
     // Accessible names start with the visible words, so voice control matches them.
-    next.setAttribute('aria-label', last ? t('Start over') : `${t(nextLabel)}: ${t(pages[index + 1].dataset.title)}`);
-    back.setAttribute('aria-label', index === 0 ? t('Back') : `${t('Back')}: ${t(pages[index - 1].dataset.title)}`);
+    next.setAttribute('aria-label', restart ? t('Start over') : `${t(nextLabel)}: ${nextStep || t(pages[index + 1].dataset.title)}`);
+    back.setAttribute('aria-label', backStep ? `${t('Back')}: ${backStep}` : index === 0 ? t('Back') : `${t('Back')}: ${t(pages[index - 1].dataset.title)}`);
 
     links.forEach((link, i) => {
       const active = i === chapterIndex;
@@ -180,8 +212,12 @@ export function initPager() {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
 
-  back.addEventListener('click', () => go(current - 1));
-  next.addEventListener('click', () => go(current === pages.length - 1 ? 0 : current + 1));
+  back.addEventListener('click', () => advance(-1));
+  next.addEventListener('click', () => advance(1));
+  // A step chosen any way (tab, keys, Next) relabels Next and Back.
+  new MutationObserver(records => {
+    if (records.some(record => record.target.closest('[data-pager-steps]'))) update(true);
+  }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['aria-selected'] });
   links.forEach((link, i) => link.addEventListener('click', event => { event.preventDefault(); go(chapters[i].pages[0]); }));
 
   // In-page links to a page or chapter use the same smooth, snapped move.
@@ -227,7 +263,7 @@ export function initPager() {
     const focus = document.activeElement;
     if (focus && focus !== document.body && focus.closest('input, select, textarea, canvas, [role="tab"], [role="slider"], [contenteditable], [tabindex="0"]')) return;
     event.preventDefault();
-    go(event.key === 'ArrowRight' ? current + 1 : current - 1);
+    advance(event.key === 'ArrowRight' ? 1 : -1);
   });
 
   // First measurement waits for layout to settle instead of forcing it during start-up.

@@ -30,7 +30,7 @@ export function sdkCommand(tab='mesh',action='plan') {
 }
 export function initSdkWorkbench() {
  const root=document.getElementById('ink-sdk-guide');if(!root)return;
- let tab='mesh';const tabs=[...root.querySelectorAll('[data-sdk-tab]')],action=root.querySelector('#sdk-action');
+ let tab='setup';const tabs=[...root.querySelectorAll('[data-sdk-tab]')],action=root.querySelector('#sdk-action');
  function render(){
   tabs.forEach(b=>{const selected=b.dataset.sdkTab===tab;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;});
   root.querySelector('#sdk-panel').setAttribute('aria-labelledby','sdk-tab-'+tab);

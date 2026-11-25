@@ -1,5 +1,5 @@
 // Background worker that draws the cover's rotating scroll on an OffscreenCanvas.
-import { drawHeroScene } from './hero-render.js?v=20261123-repl';
+import { drawHeroScene } from './hero-render.js?v=20261125-steps';
 
 let canvas = null, ctx = null, size = null, state = { rotation: -.36, mode: 'layers' }, pending = false;
 
