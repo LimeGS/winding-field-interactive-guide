@@ -1,5 +1,5 @@
-import {makeFragment} from './ink-model.js?v=20261123-ink';
-import {t} from './i18n.js?v=20261123-ink';
+import {makeFragment} from './ink-model.js?v=20261125-steps';
+import {t} from './i18n.js?v=20261125-steps';
 
 const lessons = [
   ['01 / THE INPUT','Keep the depth. Follow the surface.',

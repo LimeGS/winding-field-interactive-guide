@@ -1,20 +1,45 @@
+// The official release image: GPU (CUDA) by default; the same tag with -cpu runs without a GPU.
+export const SDK_VERSION = '0.1.1';
+export const SDK_IMAGE = `ghcr.io/limegs/ink-sdk:${SDK_VERSION}`;
+// One line per terminal: ink-sdk, VILLA and the renderer, run as you in this folder.
+export const INK_FUNCTION = `ink() { docker run --rm --gpus all --user "$(id -u):$(id -g)" -v "$PWD:/work" \\\n  -v ink-sdk-models:/models ${SDK_IMAGE} "$@"; }`;
 export function sdkCommand(tab='mesh',action='plan') {
-  if(tab==='setup')return "git clone https://github.com/LimeGS/ink-sdk.git\ncd ink-sdk\npython3 -m pip install -e '.[all]'\nink-sdk models\nink-sdk fetch\nink-sdk doctor";
-  if(tab==='mesh')return `# 1. Find the exported surface tile\nTILE="$(dirname "$(find exports/paris4-W-60/level-0000/render \\\n  -type f -path '*/tifxyz/meta.json' -print -quit)")"\n\n# 2. Render its depth stack and run the ink model\nink-sdk infer \\\n  --profile ink_9um@reader-v3 \\\n  --tifxyz "$TILE" \\\n  --ct /data/paris4-9.6um.zarr --voxel-um 9.6 \\\n  --renderer /path/to/AppRun --villa /path/to/villa \\\n  --out runs/paris4-ink`;
-  const command='ink-sdk battery \\\n  --surface-volume runs/paris4-ink/render \\\n  --voxel-um 9.6 \\\n  --centres 0 \\\n  --steps 1 \\\n  --villa /path/to/villa \\\n  --out runs/ink-comparison';
-  return action==='plan'?command+' \\\n  --dry-run':command;
+  if(tab==='setup')return [
+    '# Once per terminal: the official ink-sdk image',
+    INK_FUNCTION,
+    '',
+    '# Reader V3’s weights, kept in the ink-sdk-models volume',
+    'ink fetch --profile ink_9um@reader-v3',
+    'ink doctor'
+  ].join('\n');
+  if(tab==='mesh')return [
+    '# 1. Find the first exported surface tile',
+    'TILE="$(dirname "$(find exports/paris4-W-60/level-0000/render \\',
+    "  -type f -path '*/tifxyz/meta.json' -print -quit)\")\"",
+    '',
+    '# 2. Copy only the CT around it (about 0.2 GB)',
+    'ink ct-copy --tifxyz "$TILE" --out data/ct.zarr',
+    '',
+    '# 3. Render its depth stack and run the ink model',
+    'ink infer --profile ink_9um@reader-v3 \\',
+    '  --tifxyz "$TILE" --ct data/ct.zarr \\',
+    '  --out runs/paris4-ink'
+  ].join('\n');
+  const command=['ink battery \\','  --surface-volume runs/paris4-ink/render \\','  --voxel-um 9.6 \\','  --centres 0 \\','  --steps 1 \\','  --out runs/ink-comparison'].join('\n');
+  return action==='plan'?command+' \\\n  --dry-run':'# Every model’s weights (about 7 GB), once\nink fetch\n\n'+command;
 }
 export function initSdkWorkbench() {
  const root=document.getElementById('ink-sdk-guide');if(!root)return;
- let tab='mesh';const tabs=[...root.querySelectorAll('[data-sdk-tab]')],action=root.querySelector('#sdk-action');
+ let tab='setup';const tabs=[...root.querySelectorAll('[data-sdk-tab]')],action=root.querySelector('#sdk-action');
  function render(){
   tabs.forEach(b=>{const selected=b.dataset.sdkTab===tab;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;});
   root.querySelector('#sdk-panel').setAttribute('aria-labelledby','sdk-tab-'+tab);
   root.querySelector('#sdk-heading').textContent=tab==='mesh'?'From the exported mesh to an ink map.':tab==='setup'?'Install ink-sdk and check your models.':'Compare ink models on your scroll.';
-  root.querySelector('#sdk-description').textContent=tab==='mesh'?'Run from the same working directory as the geometry example. Step 1 finds the first exported TIFXYZ tile. Step 2 renders its depth stack and runs the Reader V3 ink model in both depth directions.':tab==='setup'?'Use Python 3.11 or newer. Install the SDK, list the profiles, fetch model weights and check the environment. Prepare VILLA for the profiles that require it.':'Run “From this mesh” first, then compare every compatible profile on its saved 9.6 µm depth stack. Use separately prepared inputs for other resolutions.';
+  root.querySelector('#sdk-description').textContent=tab==='mesh'?'Run in the same folder and terminal as the geometry commands, after Install & check. Step 1 finds the first exported tile, step 2 copies the CT around it, and step 3 renders its depth stack and runs Reader V3 in both depth directions.':tab==='setup'?'Run these in the same folder as the geometry commands. The image already holds ink-sdk, VILLA’s inference code and the renderer; fetch downloads Reader V3’s weights and doctor checks everything.':'Run “From this mesh” first, then compare every compatible profile on its saved 9.6 µm depth stack. Use separately prepared inputs for other resolutions.';
   root.querySelector('#sdk-fields').hidden=tab!=='compare';
   root.querySelector('#sdk-command').textContent=sdkCommand(tab,action.value);
-  const facts=tab==='mesh'?['ink-sdk does not stream remote CT, so download the same 9.6 µm level used for the geometry (the path ending in /2) as a local uint8 OME-Zarr whose first array is that data. Replace /data/paris4-9.6um.zarr with its path.','Install the renderer (vc_render_tifxyz, usually an AppImage whose launcher is AppRun) and VILLA, fetch the model weights, and replace their paths. The output includes an ink map and the rendered depth stack for further model comparisons.','Reader V3 is a good first choice here. Newer ink-sdk releases add Argus V3, fine-tuned on native scans. Check each model card for its training scrolls before calling a map of this scroll an out-of-sample test.']:tab==='setup'?['fetch downloads the selected model weights; inference does not download them automatically.','doctor checks the installed environment and available checkpoints.']:action.value==='plan'?['Plan comparison lists planned runs and skipped profiles without inference.','The saved stack has 17 slices at 9.6 µm. Centre 0 keeps the window within it; incompatible profiles are reported and skipped.']:['Review runs/ink-comparison/index.html and the run receipts.','Compare the signal with CT and reserved labels; the gallery does not choose the best model for you.'];
+  const facts=tab==='mesh'?['ink-sdk renders from local CT, but the whole 9.6 µm level is about 1.3 TB. ct-copy copies only the chunks near this tile, keeping the original indices so the tile’s coordinates still match; it reads the scan’s address from the tile itself.','Tested end to end on 4 CPU cores without a GPU, with the -cpu image: copying the CT took 23 s and rendering plus inference about 1 minute for one 1024 × 1024 tile.','Reader V3 is a good first choice here. Newer ink-sdk releases add Argus V3, fine-tuned on native scans. Check each model card for its training scrolls before calling a map of this scroll an out-of-sample test.']:tab==='setup'?['The image holds ink-sdk, VILLA and the renderer, with GPU support; it is about 5 GB to download and pinned to a stable release. Without an NVIDIA GPU, add -cpu to the tag and drop --gpus all.','The weights live in a Docker volume, so later terminals reuse them. On the -cpu image, doctor reports CUDA as missing: expected, everything then runs on CPU.']:action.value==='plan'?['Plan comparison lists planned runs and skipped profiles without inference. On this depth stack: 9 compatible models, 10 skipped for scale.','The saved stack has 17 slices at 9.6 µm. Centre 0 keeps the window within it; incompatible profiles are reported and skipped.']:['Review runs/ink-comparison/index.html and the run receipts.','Compare the signal with CT and reserved labels; the gallery does not choose the best model for you.'];
+  
   root.querySelector('#sdk-facts').replaceChildren(...facts.map(text=>{const e=document.createElement('div');e.className='cli-fact';e.textContent=text;return e;}));
  }
  tabs.forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.sdkTab;render();}));

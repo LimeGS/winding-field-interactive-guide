@@ -1,10 +1,10 @@
-import { startI18n, t } from './i18n.js?v=20261123-ink';
-import { initSdkWorkbench } from './sdk-workbench.js?v=20261123-ink';
-import { initCliLab } from './cli-lab.js?v=20261123-ink';
-import { initColdOpen } from './cold-open.js?v=20261123-ink';
-import { initPager } from './pager.js?v=20261123-ink';
-import { windingColor, windingGradient } from './winding-colors.js?v=20261123-ink';
-import * as heroScene from './hero-render.js?v=20261123-ink';
+import { startI18n, t } from './i18n.js?v=20261125-steps';
+import { initSdkWorkbench } from './sdk-workbench.js?v=20261125-steps';
+import { initCliLab } from './cli-lab.js?v=20261125-steps';
+import { initColdOpen } from './cold-open.js?v=20261125-steps';
+import { initPager } from './pager.js?v=20261125-steps';
+import { windingColor, windingGradient } from './winding-colors.js?v=20261125-steps';
+import * as heroScene from './hero-render.js?v=20261125-steps';
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -107,7 +107,7 @@ const heroCanvas = $('#hero-canvas');
 function heroRenderer(canvas){
   if('transferControlToOffscreen' in canvas&&typeof Worker!=='undefined'){
     try{
-      const worker=new Worker(new URL('./hero-worker.js?v=20261123-ink',import.meta.url),{type:'module'});
+      const worker=new Worker(new URL('./hero-worker.js?v=20261125-steps',import.meta.url),{type:'module'});
       const offscreen=canvas.transferControlToOffscreen();
       worker.postMessage({type:'init',canvas:offscreen},[offscreen]);
       let size=null;
@@ -185,15 +185,15 @@ function pipelineSVG(mode){
 }
 $$('[data-pipe-graphic]').forEach(el=>{el.innerHTML=pipelineSVG(el.dataset.pipeGraphic);});
 
-whenNear(document.getElementById('clues-lab'),()=>import('./clues-lab.js?v=20261123-ink').then(m=>m.initCluesLab()));
+whenNear(document.getElementById('clues-lab'),()=>import('./clues-lab.js?v=20261125-steps').then(m=>m.initCluesLab()));
 initColdOpen();
-whenNear(document.getElementById('field-lab'),()=>Promise.all([import('./field-lab.js?v=20261123-ink'),import('./compact-labs.js?v=20261123-ink')]).then(([field,compact])=>{field.initFieldLab();compact.compactField();}));
+whenNear(document.getElementById('field-lab'),()=>Promise.all([import('./field-lab.js?v=20261125-steps'),import('./compact-labs.js?v=20261125-steps')]).then(([field,compact])=>{field.initFieldLab();compact.compactField();}));
 initCliLab();
 // The "five knobs" notebook link sits in the command builder's form column.
 {const knobs=document.querySelector('#p-code-2 .page-body > details.deep-dive'),configs=document.querySelector('#cli-lab .cli-configs');if(knobs&&configs)configs.after(knobs);}
 initSdkWorkbench();
-whenNear(document.getElementById('ink-lab'),()=>Promise.all([import('./ink-lab.js?v=20261123-ink'),import('./compact-labs.js?v=20261123-ink')]).then(([ink,compact])=>{ink.initInkLab();compact.compactInk();}));
-whenNear(document.getElementById('ink-primer'),()=>import('./ink-primer.js?v=20261123-ink').then(m=>m.initInkPrimer()));
+whenNear(document.getElementById('ink-lab'),()=>Promise.all([import('./ink-lab.js?v=20261125-steps'),import('./compact-labs.js?v=20261125-steps')]).then(([ink,compact])=>{ink.initInkLab();compact.compactInk();}));
+whenNear(document.getElementById('ink-primer'),()=>import('./ink-primer.js?v=20261125-steps').then(m=>m.initInkPrimer()));
 
 // Real numerical computation on a tiny synthetic graph. The full Python core is not loaded.
 const NX=12,NY=6,N=NX*NY;
